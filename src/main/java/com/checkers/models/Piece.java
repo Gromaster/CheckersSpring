@@ -1,9 +1,13 @@
 package com.checkers.models;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public abstract class Piece implements Moveable{
     private final PieceColor color;
     private PieceType pieceType;
     private Place place;
+    private ArrayList<Place> possibleMoves;
 
     public Piece(PieceColor color, PieceType pieceType) {
         this.color = color;
@@ -29,5 +33,13 @@ public abstract class Piece implements Moveable{
 
     public void setPlace(Place place) {
         this.place = place;
+    }
+
+    public ArrayList<Place> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+    public void setPossibleMoves(ArrayList<Place> possibleMoves) {
+        this.possibleMoves = possibleMoves;
     }
 }

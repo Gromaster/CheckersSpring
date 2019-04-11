@@ -1,29 +1,31 @@
 package com.checkers.models;
 
+import javax.naming.Name;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Game {
-    private static Board board;
-    private static ArrayList<BlackPiece> blackTeam;
-    private static ArrayList<WhitePiece> whiteTeam;
-    private static Results results;
-
-    public static void main(String[] args) {
+    private  Board board;
+    private  ArrayList<BlackPiece> blackTeam;
+    private  ArrayList<WhitePiece> whiteTeam;
+    private  Results results;
+    
+    
+    public void startGame() {
         board = new Board();
         initStartingPositions();
         results = new Results();
         while (!results.isGameOver()) {
             WhiteTurn();
-            if(!results.isGameOver())break;
+            if (!results.isGameOver()) break;
             BlackTurn();
         }
-
     }
 
-    private static void WhiteTurn() {
+    private void WhiteTurn() {
         if(canTeamJump(whiteTeam)){
             findTheMostEffectiveJump(whiteTeam);
+            if(checkIfRanOutOfPieces(blackTeam))results.WhiteWon();
         }
         else if(canTeamMove(whiteTeam)){
             findAllMovesPossible(whiteTeam);
@@ -32,9 +34,11 @@ public class Game {
     }
 
 
-    private static void BlackTurn() {
+
+    private void BlackTurn() {
         if(canTeamJump(blackTeam)){
             findTheMostEffectiveJump(blackTeam);
+            if(checkIfRanOutOfPieces(whiteTeam))results.BlackWon();
         }
         else if(canTeamMove(blackTeam)){
             findAllMovesPossible(blackTeam);
@@ -42,29 +46,30 @@ public class Game {
         else results.WhiteWon();
     }
 
-    private static <T extends Piece> void findTheMostEffectiveJump(ArrayList<T> team) {//TODO
 
+
+
+
+    private <T extends Piece> boolean checkIfRanOutOfPieces(ArrayList<T> team) {
+        if(team.size()==0)return true;
+        return false;
     }
-
-    private static <T extends Piece> void findAllMovesPossible(ArrayList<T> team) {//TODO
-
-    }
-
-    private static <T extends Piece> boolean canTeamMove(ArrayList<T> team) {
+        
+    private <T extends Piece> boolean canTeamMove(ArrayList<T> team) {
         for(Piece piece:team){
             if(canMove(piece))return true;
         }
         return false;
     }
 
-    private static <T extends Piece> boolean canTeamJump(ArrayList<T> team) {
+    private <T extends Piece> boolean canTeamJump(ArrayList<T> team) {
         for(Piece piece:team){
             if(canJump(piece))return true;
         }
         return false;
     }
 
-    static ArrayList<Place> validMoves(Piece piece){
+    ArrayList<Place> validMoves(Piece piece){
         if(canJump(piece)){
             return findListOfAvailableJumps(piece, piece.getPlace());
         }
@@ -74,7 +79,7 @@ public class Game {
         else return null;
     }
 
-    private static ArrayList<Place> findListOfAvailableMoves(Piece piece) {//TODO
+    private ArrayList<Place> findListOfAvailableMoves(Piece piece) {
         ArrayList<Place> validPlaces=new ArrayList<Place>();
         switch (piece.getPieceType()) {
             case MEN:
@@ -99,10 +104,19 @@ public class Game {
 
 
 
+    private <T extends Piece>void findTheMostEffectiveJump(ArrayList<T> team) {//TODO
+        JumpTree jumpTree;
+        for(int i=0;i<team.size();i++){
+            jumpTree=new JumpTree(new NodeOfJumpTree(team.get(i).getPlace()));
+            jumpTree.root=findListOfAvailableJumps();
+            //compare and find the longest jump of the whole team
+        }
 
+    }
 
-    private static ArrayList<Place> findListOfAvailableJumps(Piece piece, Place placeOfPiece) {
+    private NodeOfJumpTree findListOfAvailableJumps(Piece piece, Place placeOfPiece) {
         ArrayList<Place> validPlaces=new ArrayList<Place>();
+        NodeOfJumpTree currNode=new NodeOfJumpTree(placeOfPiece);
         switch (piece.getPieceType()) {
             case MEN:
                 for (int i = -1; i < 2; i += 2) {
@@ -114,7 +128,8 @@ public class Game {
                             continue;
                         if (board.getPlace(placeNextToPiece).getPieceOccupying().getColor() != piece.getColor()
                                 && board.getPlace(placeBehindPlaceNextToPiece).getPieceOccupying() == null) {
-                            validPlaces.add(placeBehindPlaceNextToPiece);
+                            //BUILD THE TREE AND IMPLEMENT RECURENCY
+                            //validPlaces.add(placeBehindPlaceNextToPiece);
                         }
                     }
                 }
@@ -133,6 +148,7 @@ public class Game {
                                     && board.getPlace(placeBehindPlaceOnWay).getPieceOccupying() == null) {
                                 validPlaces.add(placeBehindPlaceOnWay);
                             }
+                            //BUILD THE TREE AND IMPLEMENT RECURENCY
                             placeOnWay = placeBehindPlaceOnWay;
                             placeBehindPlaceOnWay = new Place((char) (placeBehindPlaceOnWay.getColumn() + i), placeBehindPlaceOnWay.getRow() + j);
                         }
@@ -142,7 +158,7 @@ public class Game {
         return validPlaces;
     }
 
-    private static boolean canMove(Piece piece) {
+    private  boolean canMove(Piece piece) {
         switch (piece.getPieceType()) {
             case MEN:
                 for (int i = 0; i < 2; i++) {
@@ -161,7 +177,7 @@ public class Game {
         return false;
     }
 
-    private static boolean canJump(Piece piece) {
+    private  boolean canJump(Piece piece) {
         switch (piece.getPieceType()) {
             case MEN:
                 for (int i = -1; i < 2; i += 2) {
@@ -196,13 +212,13 @@ public class Game {
         return false;
     }
 
-    private static void initStartingPositions(){
+    private  void initStartingPositions(){
         initBlackTeam();
         initWhiteTeam();
         checkStartingBoard();
     }
 
-    private static void checkStartingBoard() {
+    private  void checkStartingBoard() {
         for(Place p:board.getPlaces()){
             if(p.getRow()<=3 && p.getPieceOccupying().getClass()!=WhitePiece.class) throw new RuntimeException("Wrong initialization, not White in row<3");
             else if (p.getRow()<=5 && p.getPieceOccupying()!=null) throw new RuntimeException("Wrong initialization, not null in 3<row<6");
@@ -211,7 +227,7 @@ public class Game {
 
     }
 
-    private static void initBlackTeam() {
+    private  void initBlackTeam() {
         blackTeam=new ArrayList<BlackPiece>(12);
         Collections.reverse(board.getPlaces());
         if(board.getPlaces().get(0).getRow()!=8) throw new RuntimeException("Reverse during initialization of Black Team failed");
@@ -224,7 +240,7 @@ public class Game {
         if(board.getPlaces().get(0).getRow()!=1) throw new RuntimeException("Second reverse during initialization of Black Team failed");
     }
 
-    private static void initWhiteTeam() {
+    private  void initWhiteTeam() {
         for(int i=0;i<12;i++){
             WhitePiece newWhite=new WhitePiece(PieceType.MEN);
             board.getPlaces().get(i).setPieceOccupying(newWhite);

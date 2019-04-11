@@ -43,6 +43,7 @@ public class Game {
     }
 
     private static <T extends Piece> void findTheMostEffectiveJump(ArrayList<T> team) {//TODO
+
     }
 
     private static <T extends Piece> void findAllMovesPossible(ArrayList<T> team) {//TODO
@@ -75,7 +76,24 @@ public class Game {
 
     private static ArrayList<Place> findListOfAvailableMoves(Piece piece) {//TODO
         ArrayList<Place> validPlaces=new ArrayList<Place>();
-
+        switch (piece.getPieceType()) {
+            case MEN:
+                for (int i = 0; i < 2; i++) {
+                    Place placeOfInterest = new Place((char) (piece.getPlace().getColumn() + piece.moveVector[i][0]), piece.getPlace().getRow() + piece.moveVector[i][1]);
+                    if(!placeOfInterest.isOutOfBoard() && board.getPlace(placeOfInterest).getPieceOccupying()==null) validPlaces.add(placeOfInterest);
+                }
+                break;
+            case KING:
+                for (int i = -1; i < 2; i += 2) {
+                    for (int j = -1; j < 2; j += 2) {
+                        Place placeOfInterest = new Place((char) (piece.getPlace().getColumn() + i), piece.getPlace().getRow() + j);
+                        while(!placeOfInterest.isOutOfBoard() && board.getPlace(placeOfInterest).getPieceOccupying() == null){
+                            validPlaces.add(placeOfInterest);
+                            placeOfInterest = new Place((char) (placeOfInterest.getColumn()+i),placeOfInterest.getRow()+j);
+                        }
+                    }
+                }
+        }
         return validPlaces;
     }
 
@@ -107,6 +125,7 @@ public class Game {
                         Place placeOnWay = new Place((char) (piece.getPlace().getColumn() + i), piece.getPlace().getRow() + j);
                         Place placeBehindPlaceOnWay = new Place((char) (placeOnWay.getColumn() + i), placeOnWay.getRow() + j);
                         while (!placeBehindPlaceOnWay.isOutOfBoard()) {//checking in one direction
+                            //noinspection StatementWithEmptyBody
                             if (board.getPlace(placeOnWay).getPieceOccupying() == null) { }
                             else if (board.getPlace(placeOnWay).getPieceOccupying().getColor() == piece.getColor())
                                 break;
@@ -163,6 +182,7 @@ public class Game {
                         Place placeOnWay = new Place((char) (piece.getPlace().getColumn() + i), piece.getPlace().getRow() + j);
                         Place placeBehindPlaceOnWay = new Place((char) (placeOnWay.getColumn() + i), placeOnWay.getRow() + j);
                         while (!placeBehindPlaceOnWay.isOutOfBoard()) {//checking in one direction
+                            //noinspection StatementWithEmptyBody
                             if(board.getPlace(placeOnWay).getPieceOccupying()==null){}
                             else if (board.getPlace(placeOnWay).getPieceOccupying().getColor() == piece.getColor()) break;
                             else if (board.getPlace(placeOnWay).getPieceOccupying().getColor() != piece.getColor()
@@ -176,7 +196,7 @@ public class Game {
         return false;
     }
 
-    static void initStartingPositions(){
+    private static void initStartingPositions(){
         initBlackTeam();
         initWhiteTeam();
         checkStartingBoard();

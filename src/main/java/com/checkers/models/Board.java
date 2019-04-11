@@ -8,6 +8,7 @@ public class Board {
     private final int NUMBER_OF_ROWS=8;
     private ArrayList<Place> places= new ArrayList<Place>(BOARD_SIZE);
 
+
     public Board() {
         initPlaces();
     }

@@ -36,6 +36,13 @@ public class Board {
     public Place getPlace(Place place) {
         return places.get(places.indexOf(place));
     }
+
+    public Place placeBetween(Place place1,Place place2){
+        int middleRow = (place1.getRow() + place2.getRow())/2;
+        char middleColumn = (char)((place1.getColumn() + place2.getColumn())/2);
+        return getPlace(middleColumn,middleRow);
+    }
+
 }
 
 

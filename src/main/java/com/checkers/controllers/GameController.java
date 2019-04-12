@@ -11,5 +11,16 @@ public class GameController {
     public String home(){
         return "home";
     }
+
+    //send movable pieces
+
+    //send possible moves for exact piece
+
+    //
+
+
+
+
+
 }
 

@@ -64,5 +64,7 @@ public class Place {
     }
 
 
-
+    public void free() {
+        this.pieceOccupying=null;
+    }
 }

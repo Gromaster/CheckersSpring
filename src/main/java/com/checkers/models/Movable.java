@@ -1,5 +1,5 @@
 package com.checkers.models;
 
-public interface Moveable {
+public interface Movable {
     public int[][] moveVector = new int[2][2];
 }

@@ -1,6 +1,5 @@
 package com.checkers.models;
 
-import javax.naming.Name;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -22,13 +21,34 @@ public class Game {
         }
     }
 
+    private void makeMove(Piece piece,Place destinationPlace){//TODO
+        board.getPlace(piece.getPlace()).free();
+        board.getPlace(destinationPlace).setPieceOccupying(piece);
+        piece.setPlace(destinationPlace);
+    }
+
+    private void makeJump(Piece piece,ArrayList<Place> jumpTrace) {//TODO
+        for (int i = 1; i < jumpTrace.size(); i++) {
+            Place placeBetween = board.placeBetween(jumpTrace.get(i - 1), jumpTrace.get(i));
+            Piece pieceToRemove = board.getPlace(placeBetween).getPieceOccupying();
+            switch (pieceToRemove.getColor()) {
+                case BLACK:
+                    blackTeam.remove(pieceToRemove);
+                    break;
+                case WHITE:
+                    whiteTeam.remove(pieceToRemove);
+            }
+            board.setPieceOnPlaces(placeBetween, null);
+
+        }
+    }
+
     private void WhiteTurn() {
         if(canTeamJump(whiteTeam)){
             findTheMostEffectiveJump(whiteTeam);
             if(checkIfRanOutOfPieces(blackTeam))results.WhiteWon();
         }
-        else if(canTeamMove(whiteTeam)){
-            findAllMovesPossible(whiteTeam);
+        else if(canTeamMove(whiteTeam)){//TODO
         }
         else results.BlackWon();
     }
@@ -40,21 +60,72 @@ public class Game {
             findTheMostEffectiveJump(blackTeam);
             if(checkIfRanOutOfPieces(whiteTeam))results.BlackWon();
         }
-        else if(canTeamMove(blackTeam)){
-            findAllMovesPossible(blackTeam);
+        else if(canTeamMove(blackTeam)){//TODO
         }
         else results.WhiteWon();
     }
 
-
-
-
-
-    private <T extends Piece> boolean checkIfRanOutOfPieces(ArrayList<T> team) {
-        if(team.size()==0)return true;
-        return false;
+    /**
+     *
+     * @param team
+     * @param <T>
+     * @return
+     */
+    private <T extends Piece> ArrayList<T> findAllMovablePieces(ArrayList<T> team) {
+        ArrayList<T> movablePieces = new ArrayList<>();
+        for(int i=0;i<team.size();i++){
+            if(canMove(team.get(i)))movablePieces.add(team.get(i));
+        }
+        return movablePieces;
     }
-        
+
+    /**
+     *
+     * @param piece
+     * @param <T>
+     * @return
+     */
+    private <T extends Piece> ArrayList<Place> findAllMovesPossible(Piece piece){
+        if(piece.getColor()==PieceColor.BLACK){
+            piece=findPieceInTeam(piece,blackTeam);
+        }
+        else {
+            piece=findPieceInTeam(piece,whiteTeam);
+        }
+        return findListOfAvailableMoves(piece);
+    }
+
+    /**
+     *
+     * @param piece
+     * @param team
+     * @param <T>
+     * @return
+     */
+    private <T extends Piece> Piece findPieceInTeam(Piece piece, ArrayList<T> team) {
+        for(int i=0;i<team.size();i++){
+            if(piece.getPlace().equals(team.get(i).getPlace())) return team.get(i);
+        }
+        throw new RuntimeException("Failed to find searching piece in team");
+    }
+
+    /**
+     *
+     * @param team
+     * @param <T>
+     * @return
+     */
+    private <T extends Piece> boolean checkIfRanOutOfPieces(ArrayList<T> team) {
+        return team.size() == 0;
+    }
+
+    /**
+     *
+     *
+     * @param team
+     * @param <T>
+     * @return
+     */
     private <T extends Piece> boolean canTeamMove(ArrayList<T> team) {
         for(Piece piece:team){
             if(canMove(piece))return true;
@@ -62,6 +133,13 @@ public class Game {
         return false;
     }
 
+    /**
+     * Checking if any of team member can make a jump
+     *
+     * @param team  pieces belonging to team organized in ArrayList
+     * @param <T>
+     * @return      true if any member can jump, otherwise false
+     */
     private <T extends Piece> boolean canTeamJump(ArrayList<T> team) {
         for(Piece piece:team){
             if(canJump(piece))return true;
@@ -69,16 +147,11 @@ public class Game {
         return false;
     }
 
-    ArrayList<Place> validMoves(Piece piece){
-        if(canJump(piece)){
-            return findListOfAvailableJumps(piece, piece.getPlace());
-        }
-        else if (canMove(piece)){
-            return findListOfAvailableMoves(piece);
-        }
-        else return null;
-    }
-
+    /**
+     *
+     * @param piece
+     * @return
+     */
     private ArrayList<Place> findListOfAvailableMoves(Piece piece) {
         ArrayList<Place> validPlaces=new ArrayList<Place>();
         switch (piece.getPieceType()) {
@@ -103,19 +176,29 @@ public class Game {
     }
 
 
-
-    private <T extends Piece>void findTheMostEffectiveJump(ArrayList<T> team) {//TODO
+    /**
+     *
+     * @param team
+     * @param <T>
+     * @return
+     */
+    private <T extends Piece> ArrayList<Place> findTheMostEffectiveJump(ArrayList<T> team) {
+        ArrayList<Place> mostEffectiveJump=new ArrayList<>();
         JumpTree jumpTree;
         for(int i=0;i<team.size();i++){
             jumpTree=new JumpTree(new NodeOfJumpTree(team.get(i).getPlace()));
-            jumpTree.root=findListOfAvailableJumps();
+            jumpTree.root=findListOfAvailableJumps(team.get(i),team.get(i).getPlace());
+
+            if(mostEffectiveJump.size()<jumpTree.getMaxRoute(jumpTree.root).size())
+                mostEffectiveJump=jumpTree.getMaxRoute(jumpTree.root);
             //compare and find the longest jump of the whole team
         }
 
+        return mostEffectiveJump;
     }
 
     private NodeOfJumpTree findListOfAvailableJumps(Piece piece, Place placeOfPiece) {
-        ArrayList<Place> validPlaces=new ArrayList<Place>();
+        ArrayList<Place> validPlaces=new ArrayList<>();
         NodeOfJumpTree currNode=new NodeOfJumpTree(placeOfPiece);
         switch (piece.getPieceType()) {
             case MEN:
@@ -126,8 +209,10 @@ public class Game {
                         if (placeBehindPlaceNextToPiece.isOutOfBoard() || placeNextToPiece.isOutOfBoard()) continue;
                         if (board.getPlace(placeNextToPiece).getPieceOccupying().getColor() == piece.getColor())
                             continue;
-                        if (board.getPlace(placeNextToPiece).getPieceOccupying().getColor() != piece.getColor()
-                                && board.getPlace(placeBehindPlaceNextToPiece).getPieceOccupying() == null) {
+                        if ( board.getPlace(placeNextToPiece).getPieceOccupying().getColor() != piece.getColor()
+                                && ( board.getPlace(placeBehindPlaceNextToPiece).getPieceOccupying() == null ||
+                                board.getPlace(placeBehindPlaceNextToPiece).getPieceOccupying()==piece ) ) {//case of possible jump
+                            currNode.setNextChild(findListOfAvailableJumps(piece,placeBehindPlaceNextToPiece));
                             //BUILD THE TREE AND IMPLEMENT RECURENCY
                             //validPlaces.add(placeBehindPlaceNextToPiece);
                         }
@@ -141,21 +226,25 @@ public class Game {
                         Place placeBehindPlaceOnWay = new Place((char) (placeOnWay.getColumn() + i), placeOnWay.getRow() + j);
                         while (!placeBehindPlaceOnWay.isOutOfBoard()) {//checking in one direction
                             //noinspection StatementWithEmptyBody
-                            if (board.getPlace(placeOnWay).getPieceOccupying() == null) { }
+                            if (board.getPlace(placeOnWay).getPieceOccupying() == null) {
+                                placeOnWay = placeBehindPlaceOnWay;
+                                placeBehindPlaceOnWay = new Place((char) (placeBehindPlaceOnWay.getColumn() + i), placeBehindPlaceOnWay.getRow() + j); }
                             else if (board.getPlace(placeOnWay).getPieceOccupying().getColor() == piece.getColor())
                                 break;
                             else if (board.getPlace(placeOnWay).getPieceOccupying().getColor() != piece.getColor()
-                                    && board.getPlace(placeBehindPlaceOnWay).getPieceOccupying() == null) {
-                                validPlaces.add(placeBehindPlaceOnWay);
+                                    && (board.getPlace(placeBehindPlaceOnWay).getPieceOccupying() == null ||
+                                    board.getPlace(placeBehindPlaceOnWay).getPieceOccupying()==piece )) {//case of possible jump
+                                currNode.setNextChild(findListOfAvailableJumps(piece,placeBehindPlaceOnWay));
+                                //validPlaces.add(placeBehindPlaceOnWay);
                             }
                             //BUILD THE TREE AND IMPLEMENT RECURENCY
-                            placeOnWay = placeBehindPlaceOnWay;
-                            placeBehindPlaceOnWay = new Place((char) (placeBehindPlaceOnWay.getColumn() + i), placeBehindPlaceOnWay.getRow() + j);
+                            /*placeOnWay = placeBehindPlaceOnWay;
+                            placeBehindPlaceOnWay = new Place((char) (placeBehindPlaceOnWay.getColumn() + i), placeBehindPlaceOnWay.getRow() + j);*/
                         }
                     }
                 }
         }
-        return validPlaces;
+        return new NodeOfJumpTree(placeOfPiece);
     }
 
     private  boolean canMove(Piece piece) {

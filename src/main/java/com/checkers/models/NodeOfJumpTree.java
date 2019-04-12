@@ -8,10 +8,10 @@ public class NodeOfJumpTree {
         this.place = here;
     }
 
-    public void setNextChild(Place place){
-        if(east==null)east=new NodeOfJumpTree(place);
-        else if(south==null)south=new NodeOfJumpTree(place);
-        else if(west==null)west=new NodeOfJumpTree(place);
-        else if(north==null)north=new NodeOfJumpTree(place);
+    public void setNextChild(NodeOfJumpTree newNode){
+        if(east==null)east=newNode;
+        else if(south==null)south=newNode;
+        else if(west==null)west=newNode;
+        else if(north==null)north=newNode;
     }
 }

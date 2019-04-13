@@ -21,7 +21,7 @@ public class Game {
         }
     }
 
-    private void makeMove(Piece piece,Place destinationPlace){//TODO
+    private void makeMove(Piece piece,Place destinationPlace){
         board.getPlace(piece.getPlace()).free();
         board.getPlace(destinationPlace).setPieceOccupying(piece);
         piece.setPlace(destinationPlace);
@@ -29,16 +29,22 @@ public class Game {
 
     private void makeJump(Piece piece,ArrayList<Place> jumpTrace) {//TODO
         for (int i = 1; i < jumpTrace.size(); i++) {
-            Place placeBetween = board.placeBetween(jumpTrace.get(i - 1), jumpTrace.get(i));
-            Piece pieceToRemove = board.getPlace(placeBetween).getPieceOccupying();
+            Place placeBeforeDestingation = board.placeBefore(jumpTrace.get(i - 1), jumpTrace.get(i));
+            Piece pieceToRemove = board.getPlace(placeBeforeDestingation).getPieceOccupying();
+
+            board.getPlace(piece.getPlace()).free();
+            board.getPlace(jumpTrace.get(i)).setPieceOccupying(piece);
+            piece.setPlace(jumpTrace.get(i));
+
             switch (pieceToRemove.getColor()) {
                 case BLACK:
                     blackTeam.remove(pieceToRemove);
+                    board.setPieceOnPlaces(placeBeforeDestingation, null);
                     break;
                 case WHITE:
                     whiteTeam.remove(pieceToRemove);
+                    board.setPieceOnPlaces(placeBeforeDestingation, null);
             }
-            board.setPieceOnPlaces(placeBetween, null);
 
         }
     }

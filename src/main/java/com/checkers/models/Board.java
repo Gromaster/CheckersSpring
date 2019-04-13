@@ -37,10 +37,10 @@ public class Board {
         return places.get(places.indexOf(place));
     }
 
-    public Place placeBetween(Place place1,Place place2){
-        int middleRow = (place1.getRow() + place2.getRow())/2;
-        char middleColumn = (char)((place1.getColumn() + place2.getColumn())/2);
-        return getPlace(middleColumn,middleRow);
+    public Place placeBefore(Place place1, Place place2){
+        int vectorP1P2row =  place2.getRow() - place1.getRow();
+        int vectorP1P2column = (int)place2.getColumn() - (int)place1.getColumn();
+        return getPlace((char)((int)place2.getColumn() - (int)Math.signum(vectorP1P2column)),place2.getRow() - (int)Math.signum(vectorP1P2row));
     }
 
 }

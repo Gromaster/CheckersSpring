@@ -1,5 +1,8 @@
 Manifest-Version: 1.0
+Implementation-Version: 1.0-SNAPSHOT
 Built-By: Marek
+Implementation-Vendor-Id: CheckersSpring
 Created-By: IntelliJ IDEA
 Build-Jdk: 1.8.0_202
+Main-Class: ${start-class}
 

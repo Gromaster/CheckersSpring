@@ -27,10 +27,10 @@ public class Game {
         piece.setPlace(destinationPlace);
     }
 
-    private void makeJump(Piece piece,ArrayList<Place> jumpTrace) {//TODO
+    private void makeJump(Piece piece,ArrayList<Place> jumpTrace) {
         for (int i = 1; i < jumpTrace.size(); i++) {
-            Place placeBeforeDestingation = board.placeBefore(jumpTrace.get(i - 1), jumpTrace.get(i));
-            Piece pieceToRemove = board.getPlace(placeBeforeDestingation).getPieceOccupying();
+            Place placeOfDestination = board.placeBefore(jumpTrace.get(i - 1), jumpTrace.get(i));
+            Piece pieceToRemove = board.getPlace(placeOfDestination).getPieceOccupying();
 
             board.getPlace(piece.getPlace()).free();
             board.getPlace(jumpTrace.get(i)).setPieceOccupying(piece);
@@ -39,11 +39,11 @@ public class Game {
             switch (pieceToRemove.getColor()) {
                 case BLACK:
                     blackTeam.remove(pieceToRemove);
-                    board.setPieceOnPlaces(placeBeforeDestingation, null);
+                    board.setPieceOnPlaces(placeOfDestination, null);
                     break;
                 case WHITE:
                     whiteTeam.remove(pieceToRemove);
-                    board.setPieceOnPlaces(placeBeforeDestingation, null);
+                    board.setPieceOnPlaces(placeOfDestination, null);
             }
 
         }
@@ -59,8 +59,6 @@ public class Game {
         else results.BlackWon();
     }
 
-
-
     private void BlackTurn() {
         if(canTeamJump(blackTeam)){
             findTheMostEffectiveJump(blackTeam);
@@ -71,12 +69,6 @@ public class Game {
         else results.WhiteWon();
     }
 
-    /**
-     *
-     * @param team
-     * @param <T>
-     * @return
-     */
     private <T extends Piece> ArrayList<T> findAllMovablePieces(ArrayList<T> team) {
         ArrayList<T> movablePieces = new ArrayList<>();
         for(int i=0;i<team.size();i++){
@@ -85,12 +77,6 @@ public class Game {
         return movablePieces;
     }
 
-    /**
-     *
-     * @param piece
-     * @param <T>
-     * @return
-     */
     private <T extends Piece> ArrayList<Place> findAllMovesPossible(Piece piece){
         if(piece.getColor()==PieceColor.BLACK){
             piece=findPieceInTeam(piece,blackTeam);
@@ -101,13 +87,6 @@ public class Game {
         return findListOfAvailableMoves(piece);
     }
 
-    /**
-     *
-     * @param piece
-     * @param team
-     * @param <T>
-     * @return
-     */
     private <T extends Piece> Piece findPieceInTeam(Piece piece, ArrayList<T> team) {
         for(int i=0;i<team.size();i++){
             if(piece.getPlace().equals(team.get(i).getPlace())) return team.get(i);
@@ -115,23 +94,10 @@ public class Game {
         throw new RuntimeException("Failed to find searching piece in team");
     }
 
-    /**
-     *
-     * @param team
-     * @param <T>
-     * @return
-     */
     private <T extends Piece> boolean checkIfRanOutOfPieces(ArrayList<T> team) {
         return team.size() == 0;
     }
 
-    /**
-     *
-     *
-     * @param team
-     * @param <T>
-     * @return
-     */
     private <T extends Piece> boolean canTeamMove(ArrayList<T> team) {
         for(Piece piece:team){
             if(canMove(piece))return true;
@@ -153,11 +119,6 @@ public class Game {
         return false;
     }
 
-    /**
-     *
-     * @param piece
-     * @return
-     */
     private ArrayList<Place> findListOfAvailableMoves(Piece piece) {
         ArrayList<Place> validPlaces=new ArrayList<Place>();
         switch (piece.getPieceType()) {
@@ -181,13 +142,6 @@ public class Game {
         return validPlaces;
     }
 
-
-    /**
-     *
-     * @param team
-     * @param <T>
-     * @return
-     */
     private <T extends Piece> ArrayList<Place> findTheMostEffectiveJump(ArrayList<T> team) {
         ArrayList<Place> mostEffectiveJump=new ArrayList<>();
         JumpTree jumpTree;
@@ -231,7 +185,6 @@ public class Game {
                         Place placeOnWay = new Place((char) (piece.getPlace().getColumn() + i), piece.getPlace().getRow() + j);
                         Place placeBehindPlaceOnWay = new Place((char) (placeOnWay.getColumn() + i), placeOnWay.getRow() + j);
                         while (!placeBehindPlaceOnWay.isOutOfBoard()) {//checking in one direction
-                            //noinspection StatementWithEmptyBody
                             if (board.getPlace(placeOnWay).getPieceOccupying() == null) {
                                 placeOnWay = placeBehindPlaceOnWay;
                                 placeBehindPlaceOnWay = new Place((char) (placeBehindPlaceOnWay.getColumn() + i), placeBehindPlaceOnWay.getRow() + j); }
@@ -243,7 +196,6 @@ public class Game {
                                 currNode.setNextChild(findListOfAvailableJumps(piece,placeBehindPlaceOnWay));
                                 //validPlaces.add(placeBehindPlaceOnWay);
                             }
-                            //BUILD THE TREE AND IMPLEMENT RECURENCY
                             /*placeOnWay = placeBehindPlaceOnWay;
                             placeBehindPlaceOnWay = new Place((char) (placeBehindPlaceOnWay.getColumn() + i), placeBehindPlaceOnWay.getRow() + j);*/
                         }
@@ -342,6 +294,5 @@ public class Game {
             whiteTeam.add(newWhite);
         }
     }
-    
-    
+
 }

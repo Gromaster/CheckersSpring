@@ -9,16 +9,16 @@ function setConnected(connected) {
     else {
         $("#conversation").hide();
     }
-    $("#greetings").html("");
+    $("#gameInfo").html("");
 }
 
 function connect() {
-    var socket = new SockJS('/guide-websocket');
+    var socket = new SockJS('/websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
+        stompClient.subscribe('/topic/game', function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         });
     });
@@ -32,12 +32,12 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+function sendString() {
+    stompClient.send("/app/game", {}, JSON.stringify({'stringToParse': $("#stringToParse").val()}));
 }
 
 function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+    $("#gameInfo").append("<tr><td>" + message + "</td></tr>");
 }
 
 $(function () {
@@ -46,5 +46,5 @@ $(function () {
     });
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendName(); });
+    $( "#send" ).click(function() { sendString(); });
 });

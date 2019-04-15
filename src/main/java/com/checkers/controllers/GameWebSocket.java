@@ -1,7 +1,7 @@
+/*
 package com.checkers.controllers;
 
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.websocket.server.ServerEndpoint;
@@ -26,3 +26,4 @@ public class GameWebSocket{
 
 }
 
+*/

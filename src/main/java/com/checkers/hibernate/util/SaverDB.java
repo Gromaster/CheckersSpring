@@ -1,5 +1,6 @@
 package com.checkers.hibernate.util;
 
+import com.checkers.models.Game;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -11,10 +12,10 @@ public class SaverDB {
 
     public SaverDB() {
     }
-    public void save(GameEntity gameEntity){
+    public void save(Game game){
         session=sessionFactory.openSession();
         session.beginTransaction();
-        session.save(gameEntity);
+        session.save(game);
         session.getTransaction().commit();
     }
 

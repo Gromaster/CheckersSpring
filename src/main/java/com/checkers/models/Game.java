@@ -1,36 +1,113 @@
 package com.checkers.models;
 
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+@Entity
+@Table(name= "game")
 public class Game {
+
+    @Id
+    @Column(name = "game_id")
+    private int id;
+
+    @Column(name = "whiteUser")
+    private int whiteUser_id;
+
+    @Column(name = "blackUser")
+    private int blackUser_id;
+
+    @Column(name = "whiteTeam")
+    private String whiteTeam;
+
+    @Column(name = "blackTeam")
+    private String blackTeam;
+
+    @Column(name = "currentPlayerId")
+    private int currentPlayerId;
+
+
+    @Transient
     private  Board board;
-    private  ArrayList<BlackPiece> blackTeam;
-    private  ArrayList<WhitePiece> whiteTeam;
+    @Transient
+    private  ArrayList<BlackPiece> blackTeamPieces;
+    @Transient
+    private  ArrayList<WhitePiece> whiteTeamPieces;
+    @Transient
     private  Results results;
-    
-    
+
+    public Game(int id, int whiteUser_id, int blackUser_id) {
+        this.id = id;
+        this.whiteUser_id = whiteUser_id;
+        this.blackUser_id = blackUser_id;
+        this.currentPlayerId = whiteUser_id;
+        startGame();
+    }
+
+    public Game() {
+    }
+
     public void startGame() {
         board = new Board();
         initStartingPositions();
         results = new Results();
-        while (!results.isGameOver()) {
+        /*while (!results.isGameOver()) {
             WhiteTurn();
             if (!results.isGameOver()) break;
             BlackTurn();
+        }*/
+    }
+
+    public void makeMove(String moveString){
+        ArrayList<Place> path=new ArrayList<>();
+        for(String s:moveString.split("-"))
+            path.add(new Place(s));
+        for(int i=0;i<(path.size()-1);i++) {
+            Move move = new Move(path.get(i),path.get(i+1));
+            makeMove(move);
         }
     }
 
+    private void makeMove(Move move){
+        Piece piece = board.getPlace(move.getOrigin()).getPieceOccupying();
+        Place place2Empty = board.placeBefore(move.getOrigin(),move.getDestination());
+        if(!place2Empty.equals(move.getOrigin()))
+            board.getPlace(move.getOrigin()).free();
+        else {
+            Piece piece2Remove = board.getPlace(place2Empty).getPieceOccupying();
+            switch (piece2Remove.getColor()) {
+                case BLACK:
+                    blackTeamPieces.remove(piece2Remove);
+                    board.setPieceOnPlaces(place2Empty, null);
+                    break;
+                case WHITE:
+                    whiteTeamPieces.remove(piece2Remove);
+                    board.setPieceOnPlaces(place2Empty, null);
+            }
+
+        }
+        board.getPlace(move.getDestination()).setPieceOccupying(piece);
+        piece.setPlace(move.getDestination());
+    }
+
+/*
     private void makeMove(Piece piece,Place destinationPlace){
         board.getPlace(piece.getPlace()).free();
         board.getPlace(destinationPlace).setPieceOccupying(piece);
         piece.setPlace(destinationPlace);
     }
 
+
+
     private void makeJump(Piece piece,ArrayList<Place> jumpTrace) {
+
         for (int i = 1; i < jumpTrace.size(); i++) {
-            Place placeOfDestination = board.placeBefore(jumpTrace.get(i - 1), jumpTrace.get(i));
-            Piece pieceToRemove = board.getPlace(placeOfDestination).getPieceOccupying();
+            Place place2Empty = board.placeBefore(jumpTrace.get(i - 1), jumpTrace.get(i));
+            Piece pieceToRemove = board.getPlace(place2Empty).getPieceOccupying();
 
             board.getPlace(piece.getPlace()).free();
             board.getPlace(jumpTrace.get(i)).setPieceOccupying(piece);
@@ -38,36 +115,38 @@ public class Game {
 
             switch (pieceToRemove.getColor()) {
                 case BLACK:
-                    blackTeam.remove(pieceToRemove);
-                    board.setPieceOnPlaces(placeOfDestination, null);
+                    blackTeamPieces.remove(pieceToRemove);
+                    board.setPieceOnPlaces(place2Empty, null);
                     break;
                 case WHITE:
-                    whiteTeam.remove(pieceToRemove);
-                    board.setPieceOnPlaces(placeOfDestination, null);
+                    whiteTeamPieces.remove(pieceToRemove);
+                    board.setPieceOnPlaces(place2Empty, null);
             }
 
         }
-    }
+    }*/
+/*
 
     private void WhiteTurn() {
-        if(canTeamJump(whiteTeam)){
-            findTheMostEffectiveJump(whiteTeam);
-            if(checkIfRanOutOfPieces(blackTeam))results.WhiteWon();
+        if(canTeamJump(whiteTeamPieces)){
+            findTheMostEffectiveJump(whiteTeamPieces);
+            if(checkIfRanOutOfPieces(blackTeamPieces))results.WhiteWon();
         }
-        else if(canTeamMove(whiteTeam)){//TODO
+        else if(canTeamMove(whiteTeamPieces)){//TODO
         }
         else results.BlackWon();
     }
 
     private void BlackTurn() {
-        if(canTeamJump(blackTeam)){
-            findTheMostEffectiveJump(blackTeam);
-            if(checkIfRanOutOfPieces(whiteTeam))results.BlackWon();
+        if(canTeamJump(blackTeamPieces)){
+            findTheMostEffectiveJump(blackTeamPieces);
+            if(checkIfRanOutOfPieces(whiteTeamPieces))results.BlackWon();
         }
-        else if(canTeamMove(blackTeam)){//TODO
+        else if(canTeamMove(blackTeamPieces)){//TODO
         }
         else results.WhiteWon();
     }
+*/
 
     private <T extends Piece> ArrayList<T> findAllMovablePieces(ArrayList<T> team) {
         ArrayList<T> movablePieces = new ArrayList<>();
@@ -79,10 +158,10 @@ public class Game {
 
     private <T extends Piece> ArrayList<Place> findAllMovesPossible(Piece piece){
         if(piece.getColor()==PieceColor.BLACK){
-            piece=findPieceInTeam(piece,blackTeam);
+            piece=findPieceInTeam(piece, blackTeamPieces);
         }
         else {
-            piece=findPieceInTeam(piece,whiteTeam);
+            piece=findPieceInTeam(piece, whiteTeamPieces);
         }
         return findListOfAvailableMoves(piece);
     }
@@ -275,13 +354,13 @@ public class Game {
     }
 
     private  void initBlackTeam() {
-        blackTeam=new ArrayList<BlackPiece>(12);
+        blackTeamPieces =new ArrayList<BlackPiece>(12);
         Collections.reverse(board.getPlaces());
         if(board.getPlaces().get(0).getRow()!=8) throw new RuntimeException("Reverse during initialization of Black Team failed");
         for(int i=0;i<12;i++){
             BlackPiece newBlack=new BlackPiece(PieceType.MEN);
             board.getPlaces().get(i).setPieceOccupying(newBlack);
-            blackTeam.add(newBlack);
+            blackTeamPieces.add(newBlack);
         }
         Collections.reverse(board.getPlaces());
         if(board.getPlaces().get(0).getRow()!=1) throw new RuntimeException("Second reverse during initialization of Black Team failed");
@@ -291,8 +370,79 @@ public class Game {
         for(int i=0;i<12;i++){
             WhitePiece newWhite=new WhitePiece(PieceType.MEN);
             board.getPlaces().get(i).setPieceOccupying(newWhite);
-            whiteTeam.add(newWhite);
+            whiteTeamPieces.add(newWhite);
         }
     }
 
+    public void setStringToParse(String stringToParse) {
+        ArrayList<Integer> parsed = Stream.of(stringToParse.split("/")).map(Integer::parseInt).collect(Collectors.toCollection(ArrayList::new));
+        this.id = parsed.get(0);
+        this.whiteUser_id = parsed.get(1);
+        this.blackUser_id = parsed.get(2);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getWhiteUser_id() {
+        return whiteUser_id;
+    }
+
+    public void setWhiteUser_id(int whiteUser_id) {
+        this.whiteUser_id = whiteUser_id;
+    }
+
+    public int getBlackUser_id() {
+        return blackUser_id;
+    }
+
+    public void setBlackUser_id(int blackUser_id) {
+        this.blackUser_id = blackUser_id;
+    }
+
+    public String getWhiteTeam() {
+        return whiteTeam;
+    }
+
+    public void setWhiteTeam(String whiteTeam) {
+        this.whiteTeam = whiteTeam;
+    }
+
+    public String getBlackTeam() {
+        return blackTeam;
+    }
+
+    public void setBlackTeam(String blackTeam) {
+        this.blackTeam = blackTeam;
+    }
+
+    public int getCurrentPlayerId() {
+        return currentPlayerId;
+    }
+
+    public void setCurrentPlayerId(int currentPlayerId) {
+        this.currentPlayerId = currentPlayerId;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    @Override
+    public String toString() {
+        return "GameEntity{" +
+                "id=" + id +
+                ", whiteUser_id=" + whiteUser_id +
+                ", blackUser_id=" + blackUser_id +
+                '}';
+    }
 }

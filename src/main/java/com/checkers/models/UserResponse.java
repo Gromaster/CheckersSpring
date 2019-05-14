@@ -1,13 +1,10 @@
 package com.checkers.models;
 
 public class UserResponse {
-    String content;
-
-    public UserResponse(){
-    }
+    private String content;
 
     public UserResponse(String content) {
-        this.content = content;
+        this.content=content;
     }
 
     public String getContent() {

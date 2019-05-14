@@ -5,8 +5,6 @@ import org.springframework.cglib.core.GeneratorStrategy;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,6 +22,15 @@ public class GameEntity {
     @Column(name = "blackUser")
     private int blackUser_id;
 
+    @Column(name = "whiteTeam")
+    private String whiteTeam;
+
+    @Column(name = "blackTeam")
+    private String blackTeam;
+
+    @Column(name = "currentPlayerId")
+    private int currentPlayerId;
+
     @Transient
     private String stringToParse;
 
@@ -32,7 +39,9 @@ public class GameEntity {
 
     public  GameEntity(String stringToParse){
         this.setStringToParse(stringToParse);
+    }
 
+    private void setStringToParse(String stringToParse) {
     }
 
     public GameEntity(int id, int whiteUser_id, int blackUser_id) {
@@ -45,43 +54,4 @@ public class GameEntity {
         return stringToParse;
     }
 
-    public void setStringToParse(String stringToParse) {
-        ArrayList<Integer> parsed = Stream.of(stringToParse.split("/")).map(Integer::parseInt).collect(Collectors.toCollection(ArrayList::new));
-        this.id = parsed.get(0);
-        this.whiteUser_id = parsed.get(1);
-        this.blackUser_id = parsed.get(2);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getWhiteUser_id() {
-        return whiteUser_id;
-    }
-
-    public void setWhiteUser_id(int whiteUser_id) {
-        this.whiteUser_id = whiteUser_id;
-    }
-
-    public int getBlackUser_id() {
-        return blackUser_id;
-    }
-
-    public void setBlackUser_id(int blackUser_id) {
-        this.blackUser_id = blackUser_id;
-    }
-
-    @Override
-    public String toString() {
-        return "GameEntity{" +
-                "id=" + id +
-                ", whiteUser_id=" + whiteUser_id +
-                ", blackUser_id=" + blackUser_id +
-                '}';
-    }
 }

@@ -1,12 +1,12 @@
 package com.checkers.models;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Board {
     private final int BOARD_SIZE=32;
     private final int NUMBER_OF_ROWS=8;
-    private ArrayList<Place> places= new ArrayList<Place>(BOARD_SIZE);
+    private ArrayList<Place> places= new ArrayList<>(BOARD_SIZE);
+
 
 
     public Board() {

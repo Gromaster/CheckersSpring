@@ -14,6 +14,10 @@ public class Place {
         this.row = row;
     }
 
+    public Place(String s) {
+        this(s.charAt(0),s.charAt(1));
+    }
+
     public PieceColor getColorOfPieceOccupying() {
         return colorOfPieceOccupying;
     }

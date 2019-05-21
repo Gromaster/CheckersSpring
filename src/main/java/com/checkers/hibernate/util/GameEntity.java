@@ -22,11 +22,8 @@ public class GameEntity {
     @Column(name = "blackUser")
     private int blackUser_id;
 
-    @Column(name = "whiteTeam")
-    private String whiteTeam;
-
-    @Column(name = "blackTeam")
-    private String blackTeam;
+    @Column(name = "boardState")
+    private String boardState;
 
     @Column(name = "currentPlayerId")
     private int currentPlayerId;

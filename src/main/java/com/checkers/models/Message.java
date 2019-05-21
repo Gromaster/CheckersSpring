@@ -2,22 +2,22 @@ package com.checkers.models;
 
 import javax.persistence.criteria.CriteriaBuilder;
 
-public class UserMove {
+public class Message {
     private int gameId;
     private int userId;
     private String moveString;
 
 
-    public UserMove() {
+    public Message() {
     }
 
-    public UserMove(int gameId, int userId, String moveString) {
+    public Message(int gameId, int userId, String moveString) {
         this.gameId = gameId;
         this.userId = userId;
         this.moveString = moveString;
     }
 
-    public UserMove(String stringToParse){
+    public Message(String stringToParse){
         String[] s=stringToParse.split("/");
         this.gameId = Integer.parseInt(s[0]);
         this.userId = Integer.parseInt(s[1]);

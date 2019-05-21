@@ -2,13 +2,10 @@ package com.checkers.models;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Entity
-@Table(name= "game")
 public class Game {
 
     @Id
@@ -21,11 +18,8 @@ public class Game {
     @Column(name = "blackUser")
     private int blackUser_id;
 
-    @Column(name = "whiteTeam")
-    private String whiteTeam;
-
-    @Column(name = "blackTeam")
-    private String blackTeam;
+    @Column(name = "gameState")
+    private String gameState;
 
     @Column(name = "currentPlayerId")
     private int currentPlayerId;
@@ -49,17 +43,13 @@ public class Game {
     }
 
     public Game() {
+        startGame();
     }
 
     public void startGame() {
         board = new Board();
         initStartingPositions();
         results = new Results();
-        /*while (!results.isGameOver()) {
-            WhiteTurn();
-            if (!results.isGameOver()) break;
-            BlackTurn();
-        }*/
     }
 
     public void makeMove(String moveString){
@@ -381,6 +371,36 @@ public class Game {
         this.blackUser_id = parsed.get(2);
     }
 
+    public String makeGameState(){
+        StringBuilder gameState= new StringBuilder();
+        for(Piece p:whiteTeamPieces){
+            gameState.append(stringRepresentationOfPiece(p));
+            gameState.append("-");
+        }
+        for(Piece p:blackTeamPieces){
+            gameState.append(stringRepresentationOfPiece(p));
+            gameState.append("-");
+        }
+        setGameState(gameState.toString());
+        return gameState.toString();
+    }
+
+    private String stringRepresentationOfPiece(Piece piece){
+        String result= "";
+        result += (piece.getColor()==PieceColor.WHITE ? "w" : "b");
+        result += (piece.getPieceType() == PieceType.KING ? "k" : "p");
+        result += piece.getPlace().toString();
+        return result;
+    }
+
+    public String getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(String gameState) {
+        this.gameState = gameState;
+    }
+
     public int getId() {
         return id;
     }
@@ -403,22 +423,6 @@ public class Game {
 
     public void setBlackUser_id(int blackUser_id) {
         this.blackUser_id = blackUser_id;
-    }
-
-    public String getWhiteTeam() {
-        return whiteTeam;
-    }
-
-    public void setWhiteTeam(String whiteTeam) {
-        this.whiteTeam = whiteTeam;
-    }
-
-    public String getBlackTeam() {
-        return blackTeam;
-    }
-
-    public void setBlackTeam(String blackTeam) {
-        this.blackTeam = blackTeam;
     }
 
     public int getCurrentPlayerId() {

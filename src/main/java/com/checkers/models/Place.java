@@ -67,7 +67,10 @@ public class Place {
         return result;
     }
 
-
+    @Override
+    public String toString(){
+        return column + Integer.toString(row);
+    }
     public void free() {
         this.pieceOccupying=null;
     }

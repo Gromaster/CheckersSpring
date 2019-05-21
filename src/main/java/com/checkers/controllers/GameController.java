@@ -1,12 +1,10 @@
 package com.checkers.controllers;
 
-import com.checkers.hibernate.util.GameEntity;
 import com.checkers.hibernate.util.GameResponse;
 import com.checkers.hibernate.util.ReaderDB;
 import com.checkers.hibernate.util.SaverDB;
-import com.checkers.models.Board;
 import com.checkers.models.Game;
-import com.checkers.models.UserMove;
+import com.checkers.models.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -22,22 +20,18 @@ public class GameController {
 
     @OnOpen
     @SendTo("/topic/game")
-    public GameResponse opening(UserMove userConnection){
-
+    public GameResponse opening(Message userConnection){
         readerDB.load(userConnection.getGameId());
-
-
-
         return new GameResponse("Did it again");
     }
 
 
     @MessageMapping("/game")
     @SendTo("/topic/game")
-    public GameResponse getEntity(UserMove userMove){
-        game = readerDB.load(userMove.getGameId());
-        if(userMove.getUserId()==game.getCurrentPlayerId())
-            game.makeMove(userMove.getMoveString());
+    public GameResponse getEntity(Message message){
+        game = readerDB.load(message.getGameId());
+        if(message.getUserId()==game.getCurrentPlayerId())
+            game.makeMove(message.getMoveString());
 
         saverDB.save(game);
         return new GameResponse(game);

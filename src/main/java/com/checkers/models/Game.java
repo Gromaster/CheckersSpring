@@ -3,6 +3,7 @@ package com.checkers.models;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +35,18 @@ public class Game {
     @Transient
     private  Results results;
 
+    public Game(int id, int userId) {
+        this.id = id;
+        Random r = new Random();
+        if (r.nextBoolean())
+            this.whiteUser_id = userId;
+        else
+            this.blackUser_id = userId;
+        startGame();
+    }
+
+
+
     public Game(int id, int whiteUser_id, int blackUser_id) {
         this.id = id;
         this.whiteUser_id = whiteUser_id;
@@ -43,10 +56,9 @@ public class Game {
     }
 
     public Game() {
-        startGame();
     }
 
-    public void startGame() {
+    private void startGame() {
         board = new Board();
         initStartingPositions();
         results = new Results();
@@ -122,7 +134,7 @@ public class Game {
             findTheMostEffectiveJump(whiteTeamPieces);
             if(checkIfRanOutOfPieces(blackTeamPieces))results.WhiteWon();
         }
-        else if(canTeamMove(whiteTeamPieces)){//TODO
+        else if(canTeamMove(whiteTeamPieces)){
         }
         else results.BlackWon();
     }
@@ -132,7 +144,7 @@ public class Game {
             findTheMostEffectiveJump(blackTeamPieces);
             if(checkIfRanOutOfPieces(whiteTeamPieces))results.BlackWon();
         }
-        else if(canTeamMove(blackTeamPieces)){//TODO
+        else if(canTeamMove(blackTeamPieces)){
         }
         else results.WhiteWon();
     }
@@ -178,7 +190,7 @@ public class Game {
      * Checking if any of team member can make a jump
      *
      * @param team  pieces belonging to team organized in ArrayList
-     * @param <T>
+     * @param <T>   class of pieces(white or black)
      * @return      true if any member can jump, otherwise false
      */
     private <T extends Piece> boolean canTeamJump(ArrayList<T> team) {
@@ -210,7 +222,7 @@ public class Game {
         }
         return validPlaces;
     }
-
+/*
     private <T extends Piece> ArrayList<Place> findTheMostEffectiveJump(ArrayList<T> team) {
         ArrayList<Place> mostEffectiveJump=new ArrayList<>();
         JumpTree jumpTree;
@@ -265,16 +277,16 @@ public class Game {
                                 currNode.setNextChild(findListOfAvailableJumps(piece,placeBehindPlaceOnWay));
                                 //validPlaces.add(placeBehindPlaceOnWay);
                             }
-                            /*placeOnWay = placeBehindPlaceOnWay;
-                            placeBehindPlaceOnWay = new Place((char) (placeBehindPlaceOnWay.getColumn() + i), placeBehindPlaceOnWay.getRow() + j);*/
+                            *//*placeOnWay = placeBehindPlaceOnWay;
+                            placeBehindPlaceOnWay = new Place((char) (placeBehindPlaceOnWay.getColumn() + i), placeBehindPlaceOnWay.getRow() + j);*//*
                         }
                     }
                 }
         }
         return new NodeOfJumpTree(placeOfPiece);
-    }
+    }*/
 
-    private  boolean canMove(Piece piece) {
+    private boolean canMove(Piece piece) {
         switch (piece.getPieceType()) {
             case MEN:
                 for (int i = 0; i < 2; i++) {
@@ -293,7 +305,7 @@ public class Game {
         return false;
     }
 
-    private  boolean canJump(Piece piece) {
+    private boolean canJump(Piece piece) {
         switch (piece.getPieceType()) {
             case MEN:
                 for (int i = -1; i < 2; i += 2) {
@@ -448,5 +460,9 @@ public class Game {
                 ", whiteUser_id=" + whiteUser_id +
                 ", blackUser_id=" + blackUser_id +
                 '}';
+    }
+
+    public void switchPlayer() {
+        currentPlayerId = (currentPlayerId==whiteUser_id ? blackUser_id : whiteUser_id);
     }
 }

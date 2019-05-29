@@ -12,8 +12,6 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @ServerEndpoint(
         value = "/game/{userId}",
@@ -23,49 +21,46 @@ public class GameEndpoint {
     private ReaderDB readerDB;
     private SaverDB saverDB;
     private Session session;
-    private static List<GameEndpoint> gameEndpointList = new CopyOnWriteArrayList<>();
-    private static HashMap<String, Integer> users = new HashMap<>();
+    private static HashMap<Integer, GameEndpoint> gameEndpoints = new HashMap<>();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("userId") Integer userId) {
         this.session = session;
-        gameEndpointList.add(this);
-        users.put(session.getId(), userId);
-        checkDB4Game(userId);
-        Game game = new Game();//TODO sprawdzanie czy gra jest w bazie
-
-        //jesli nie to zainicjalizowanie
-
-        //wyslanie stanu planszy
-
-        try {
-            session.getBasicRemote().sendObject(game.getGameState());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (EncodeException e) {
-            e.printStackTrace();
-        }
+        gameEndpoints.put(userId,this);
     }
 
     @OnMessage
     public void onMessage(Session session, Message message){
+        Game game;
+        if((game= readerDB.load(message.getGameId()))==null)
+            game = new Game(message.getGameId(),message.getUserId());
+        else if(game.getBlackUser_id()==0){
+            game.setBlackUser_id(message.getUserId());
+        }
+        else if (game.getWhiteUser_id()==0){
+            game.setWhiteUser_id(message.getUserId());
+        }
 
-        //znalezienie gry w bazie
+        game.makeMove(message.getMoveString());//dodać wyrzucanie błędu jeśli ruch niewłaściwy
 
-        //wczytanie gry
+        broadcast(game,message);
 
-        //wykonanie ruchu na grze
+        game.switchPlayer();
 
-        //zapisanie stanu gry
+        saverDB.save(game);
+    }
 
-        //wysłanie stanu nowej gry do obu graczy
-
-        //zmienienie id aktualnego gracza
+    private void broadcast(Game game,Message message) {
+        try {
+            gameEndpoints.get(game.getBlackUser_id()).session.getBasicRemote().sendObject(message);
+            gameEndpoints.get(game.getWhiteUser_id()).session.getBasicRemote().sendObject(message);
+        } catch (IOException | EncodeException e) {
+            e.printStackTrace();
+        }
     }
 
     @OnClose
-    public void onClose(){
-
+    public void onClose(Session session){
     }
 
 }

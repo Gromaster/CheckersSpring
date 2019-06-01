@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Entity
-@Table(name= "game")
+@Table(name = "game")
 public class GameEntity {
 
     @Id
@@ -34,7 +34,7 @@ public class GameEntity {
     public GameEntity() {
     }
 
-    public  GameEntity(String stringToParse){
+    public GameEntity(String stringToParse) {
         this.setStringToParse(stringToParse);
     }
 

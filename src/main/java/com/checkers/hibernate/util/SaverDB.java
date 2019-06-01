@@ -7,13 +7,15 @@ import org.hibernate.cfg.Configuration;
 
 
 public class SaverDB {
-    SessionFactory sessionFactory=new Configuration().configure().buildSessionFactory();
-    Session session;
+    private SessionFactory sessionFactory;
+    private Session session;
 
     public SaverDB() {
+        sessionFactory = new Configuration().configure().buildSessionFactory();
     }
-    public void save(Game game){
-        session=sessionFactory.openSession();
+
+    public void save(Game game) {
+        session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(game);
         session.getTransaction().commit();

@@ -18,8 +18,8 @@ import java.util.HashMap;
         decoders = UserMoveDecoder.class,
         encoders = BoardStateEncoder.class )
 public class GameEndpoint {
-    private ReaderDB readerDB;
-    private SaverDB saverDB;
+    private ReaderDB readerDB = new ReaderDB();
+    private SaverDB saverDB = new SaverDB();
     private Session session;
     private static HashMap<Integer, GameEndpoint> gameEndpoints = new HashMap<>();
 
@@ -41,7 +41,7 @@ public class GameEndpoint {
             game.setWhiteUser_id(message.getUserId());
         }
 
-        game.makeMove(message.getMoveString());//dodać wyrzucanie błędu jeśli ruch niewłaściwy
+        game.makeMove(message.getMoveString()); //dodać wyrzucanie błędu jeśli ruch niewłaściwy
 
         broadcast(game,message);
 

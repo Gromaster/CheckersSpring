@@ -5,7 +5,7 @@ import com.checkers.models.Game;
 public class GameResponse {
     String content;
 
-    public GameResponse(){
+    public GameResponse() {
     }
 
     public GameResponse(String content) {
@@ -13,7 +13,7 @@ public class GameResponse {
     }
 
     public GameResponse(Game game) {//TODO ma wysyłać całą planszę
-        this.content = "Game id: "+game.getId()+"\t White user id: "+game.getWhiteUser_id()+"\t Black user id: "+game.getBlackUser_id();
+        this.content = "Game id: " + game.getId() + "\t White user id: " + game.getWhiteUser_id() + "\t Black user id: " + game.getBlackUser_id();
     }
 
     public String getContent() {

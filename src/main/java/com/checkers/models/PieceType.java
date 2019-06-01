@@ -1,5 +1,5 @@
 package com.checkers.models;
 
-public enum PieceType  {
-    KING,MEN;
+public enum PieceType {
+    KING, MEN;
 }

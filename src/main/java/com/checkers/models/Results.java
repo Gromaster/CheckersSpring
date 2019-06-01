@@ -1,26 +1,26 @@
 package com.checkers.models;
 
 public class Results {
-    private PieceColor colorOfWinningTeam=null;
-    private boolean gameOver=false;
-    private int turnWithoutJumpingCounter=0;
+    private PieceColor colorOfWinningTeam = null;
+    private boolean gameOver = false;
+    private int turnWithoutJumpingCounter = 0;
 
     public void WhiteWon() {
 
-        colorOfWinningTeam=PieceColor.WHITE;
-        gameOver=true;
+        colorOfWinningTeam = PieceColor.WHITE;
+        gameOver = true;
     }
 
     public void BlackWon() {
 
-        colorOfWinningTeam=PieceColor.BLACK;
-        gameOver=true;
+        colorOfWinningTeam = PieceColor.BLACK;
+        gameOver = true;
     }
 
 
     public void Draw() {
 
-        gameOver=true;
+        gameOver = true;
     }
 
     public PieceColor getColorOfWinningTeam() {
@@ -31,8 +31,8 @@ public class Results {
         return gameOver;
     }
 
-    public void increaseCounter(){
+    public void increaseCounter() {
         turnWithoutJumpingCounter++;
-        if(turnWithoutJumpingCounter>=15)Draw();
+        if (turnWithoutJumpingCounter >= 15) Draw();
     }
 }

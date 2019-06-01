@@ -17,8 +17,8 @@ public class Message {
         this.moveString = moveString;
     }
 
-    public Message(String stringToParse){
-        String[] s=stringToParse.split("/");
+    public Message(String stringToParse) {
+        String[] s = stringToParse.split("/");
         this.gameId = Integer.parseInt(s[0]);
         this.userId = Integer.parseInt(s[1]);
         this.moveString = s[2];

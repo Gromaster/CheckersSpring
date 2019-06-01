@@ -4,9 +4,8 @@ package com.checkers.models;
 public class Place {
     private final char column;
     private final int row;
-    private Piece pieceOccupying=null;
+    private Piece pieceOccupying = null;
     private PieceColor colorOfPieceOccupying = null;
-
 
 
     public Place(char column, int row) {
@@ -15,7 +14,7 @@ public class Place {
     }
 
     public Place(String s) {
-        this(s.charAt(0),s.charAt(1));
+        this(s.charAt(0), s.charAt(1));
     }
 
     public PieceColor getColorOfPieceOccupying() {
@@ -23,7 +22,7 @@ public class Place {
     }
 
     public void setColorOfPieceOccupying(PieceColor colorOfPieceOccupying) {
-        if(this.colorOfPieceOccupying!=null)throw new RuntimeException("Trying to place one piece over another");
+        if (this.colorOfPieceOccupying != null) throw new RuntimeException("Trying to place one piece over another");
         this.colorOfPieceOccupying = colorOfPieceOccupying;
     }
 
@@ -44,9 +43,9 @@ public class Place {
         return row;
     }
 
-    public boolean isOutOfBoard(){
-        if(column < 'A' || column > 'H')return true;
-        if(row<1 || row>8)return true;
+    public boolean isOutOfBoard() {
+        if (column < 'A' || column > 'H') return true;
+        if (row < 1 || row > 8) return true;
         return false;
     }
 
@@ -62,16 +61,21 @@ public class Place {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result *= prime * (int)column;
+        result *= prime * (int) column;
         result *= prime * row;
         return result;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return column + Integer.toString(row);
     }
+
     public void free() {
-        this.pieceOccupying=null;
+        this.pieceOccupying = null;
+    }
+
+    public boolean isEmpty() {
+        return pieceOccupying == null;
     }
 }

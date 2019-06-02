@@ -1,10 +1,11 @@
-package com.checkers.models;
+package com.checkers.model;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import java.util.Date;
 
 public class Message {
     private int gameId;
     private int userId;
+    private Date movementTime;
     private String moveString;
 
 
@@ -12,9 +13,10 @@ public class Message {
     public Message() {
     }
 
-    public Message(int gameId, int userId, String moveString) {
+    public Message(int gameId, int userId, Date movementTime, String moveString) {
         this.gameId = gameId;
         this.userId = userId;
+        this.movementTime = movementTime;
         this.moveString = moveString;
     }
 
@@ -23,6 +25,11 @@ public class Message {
         this.gameId = Integer.parseInt(s[0]);
         this.userId = Integer.parseInt(s[1]);
         this.moveString = s[2];
+    }
+
+    public Message eraseMovement(){
+        String[] moveString = this.moveString.split("-");
+        return new Message(this.gameId,this.userId,this.movementTime,String.format("%s-%s",moveString[0],moveString[0]));
     }
 
     public int getUserId() {
@@ -49,8 +56,11 @@ public class Message {
         this.gameId = gameId;
     }
 
-    public Message eraseMovement(){
-        String[] moveString = this.moveString.split("-");
-        return new Message(this.gameId,this.userId,String.format("%s-%s",moveString[0],moveString[0]));
+    public Date getMovementTime() {
+        return movementTime;
+    }
+
+    public void setMovementTime(Date movementTime) {
+        this.movementTime = movementTime;
     }
 }

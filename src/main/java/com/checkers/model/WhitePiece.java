@@ -1,4 +1,4 @@
-package com.checkers.models;
+package com.checkers.model;
 
 public class WhitePiece extends Piece {
     public WhitePiece(PieceType pieceType) {

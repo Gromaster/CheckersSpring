@@ -1,11 +1,9 @@
-package com.checkers.config;
+package com.checkers.websocket;
 
-import com.checkers.brokers.BoardStateEncoder;
-import com.checkers.brokers.UserMoveDecoder;
 import com.checkers.hibernate.util.ReaderDB;
 import com.checkers.hibernate.util.SaverDB;
-import com.checkers.models.Game;
-import com.checkers.models.Message;
+import com.checkers.model.Game;
+import com.checkers.model.Message;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -47,7 +45,6 @@ public class GameEndpoint {
             game.switchPlayer();
         } catch (Exception e) {
             e.printStackTrace();
-            Message withoutChange = new Message();
             broadcast(game,message.eraseMovement());
         }
         saverDB.save(game);
@@ -69,4 +66,3 @@ public class GameEndpoint {
     }
 
 }
-

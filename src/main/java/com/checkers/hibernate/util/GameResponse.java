@@ -1,6 +1,6 @@
 package com.checkers.hibernate.util;
 
-import com.checkers.models.Game;
+import com.checkers.model.Game;
 
 public class GameResponse {
     String content;

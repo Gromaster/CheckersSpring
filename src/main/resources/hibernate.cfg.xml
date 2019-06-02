@@ -19,6 +19,6 @@
         <property name="hbm2ddl.auto">update</property>
         <!-- dbcp connection pool configuration -->
         <property name="hibernate.dbcp.initialSize">5</property>
-        <mapping class="com.checkers.models.Game" />
+        <mapping class="com.checkers.model.Game" />
     </session-factory>
 </hibernate-configuration>

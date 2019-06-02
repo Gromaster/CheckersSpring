@@ -1,6 +1,6 @@
 package com.checkers.hibernate.util;
 
-import com.checkers.models.Game;
+import com.checkers.model.Game;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

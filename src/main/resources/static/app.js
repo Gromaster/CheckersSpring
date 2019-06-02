@@ -1,3 +1,30 @@
+var ws;
+
+function connect() {
+    var userId = document.getElementById("userId").value;
+    ws = new WebSocket("ws://" + document.location.host + "/CheckersSpring/game/" + userId);
+    var gameId = document.getElementById("gameId").value;
+
+
+    ws.onmessage = function(event) {
+        var log = document.getElementById("log");
+        console.log(event.data);
+        var message = JSON.parse(event.data);
+        message.gameId = gameId;
+        log.innerHTML += message.gameId + " : " + message.content + "\n";
+    };
+}
+
+function send() {
+    var content = document.getElementById("msg").value;
+    var json = JSON.stringify({
+        "content":content
+    });
+
+    ws.send(json);
+}
+
+/*
 var stompClient = null;
 
 function setConnected(connected) {
@@ -13,7 +40,7 @@ function setConnected(connected) {
 }
 
 function connect() {
-    var socket = new SockJS('/websocket');
+    var socket = new SockJS('/websocket/game');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
@@ -47,4 +74,4 @@ $(function () {
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
     $( "#send" ).click(function() { sendString(); });
-});
+});*/

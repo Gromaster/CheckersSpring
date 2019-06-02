@@ -1,4 +1,4 @@
-package com.checkers.models;
+package com.checkers.model;
 
 import java.util.ArrayList;
 

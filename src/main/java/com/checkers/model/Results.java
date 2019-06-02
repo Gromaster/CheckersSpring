@@ -1,4 +1,4 @@
-package com.checkers.models;
+package com.checkers.model;
 
 public class Results {
     private PieceColor colorOfWinningTeam = null;

@@ -1,5 +1,11 @@
 package com.checkers.models;
 
+import com.sun.xml.internal.bind.api.Bridge;
+import com.sun.xml.internal.ws.api.model.CheckedException;
+import com.sun.xml.internal.ws.api.model.ExceptionType;
+import com.sun.xml.internal.ws.api.model.JavaMethod;
+import com.sun.xml.internal.ws.api.model.SEIModel;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,8 +77,9 @@ public class Game {
         for (int i = 0; i < (path.size() - 1); i++) {
             move.add(new Move(path.get(i), path.get(i + 1)));
         }
-        if (isMovePossible(move)) ;
-        makeMove(move);
+        if (isMovePossible(move))
+            makeMove(move);
+        else throw new PlayerError("Unexpected move");
         setGameState(makeString4GameState());
     }
 
@@ -86,12 +93,8 @@ public class Game {
         return true;
     }
 
-    private boolean isSingleMovePossible(Move m, Piece piece) {//TODO
-        //sprawdzenie odległości
-        //jeśli 1 i nie ma możliwości skoku to sprawdzenie czy moze się ruszyc
-        //jeśli 1 i jest możliwość skoku to false
-        //jeśli jest możliwość skoku to sprawdzić czy należy do listy możliwych skoków
-        //jeśli należy to true
+    private boolean isSingleMovePossible(Move m, Piece piece) {
+
         int distance = board.distance(m.getOrigin(), m.getDestination());
         if(canJump(piece)){
             if(distance == 1)return false;
@@ -434,5 +437,13 @@ public class Game {
 
     public void switchPlayer() {
         currentPlayerId = (currentPlayerId == whiteUser_id ? blackUser_id : whiteUser_id);
+    }
+
+    private class PlayerError extends RuntimeException {
+        PlayerError(String message) {
+            super(message);
+
+        }
+
     }
 }

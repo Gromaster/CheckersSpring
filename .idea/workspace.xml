@@ -7,26 +7,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9908fbeb-d14d-4781-ae35-e029ab997c0d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CheckersSpring.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CheckersSpring.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CheckersSpring.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/config/GameEndpoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/config/GameEndpoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/config/SchedulerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/GameEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/GameEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/GameResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/GameResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/HibernateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/HibernateUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/ReaderDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/ReaderDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/SaverDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/SaverDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/models/BlackPiece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/models/BlackPiece.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/models/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/models/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/models/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/models/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/models/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/models/Message.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/models/Move.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/models/Move.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/models/PieceColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/models/PieceColor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/models/PieceType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/models/PieceType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/models/Place.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/models/Place.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/models/Results.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/models/Results.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/models/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/models/UserResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/models/WhitePiece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/models/WhitePiece.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -50,22 +37,22 @@
     <expand>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MySQL - checkershibernate@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="hibernate.cfg.xml/Hibernate" type="feb32156:DbDataSourceImpl" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MySQL - checkershibernate@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="hibernate.cfg.xml/Hibernate" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MySQL - checkershibernate@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="hibernate.cfg.xml/Hibernate" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="checkershibernate: schema" type="76f4a085:MysqlImplModel$Schema" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MySQL - checkershibernate@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="hibernate.cfg.xml/Hibernate" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="checkershibernate: schema" type="76f4a085:MysqlImplModel$Schema" />
         <item name="game: table" type="285a2a93:MysqlImplModel$Table" />
@@ -81,7 +68,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Move.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
+            <state relative-caret-position="340">
               <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
               <folding>
                 <element signature="e#265#266#0" expanded="true" />
@@ -100,65 +87,68 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Message.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="20" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
+            <state relative-caret-position="471">
+              <caret line="51" column="19" selection-start-line="51" selection-start-column="19" selection-end-line="51" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/PieceColor.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="11" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Board.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="491">
-              <caret line="45" selection-start-line="45" selection-end-line="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/WhitePiece.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Results.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="117">
+              <caret line="69" column="5" lean-forward="true" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Game.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/config/GameEndpoint.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="93" column="30" lean-forward="true" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
+            <state relative-caret-position="318">
+              <caret line="51" column="9" lean-forward="true" selection-start-line="51" selection-start-column="9" selection-end-line="51" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3051#3978#0" />
-                <element signature="e#3984#4284#0" />
-                <element signature="e#4629#4937#0" />
-                <element signature="e#5064#5248#0" />
-                <element signature="e#5254#5504#0" />
-                <element signature="e#5254#5693#0" />
-                <element signature="e#5699#7014#0" />
-                <element signature="e#7095#10567#0" />
-                <element signature="e#7021#8027#0" />
-                <element signature="e#8033#10423#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/brokers/BoardStateEncoder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/brokers/UserMoveDecoder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="22" selection-start-line="22" selection-end-line="22" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="50" lean-forward="true" selection-start-line="5" selection-start-column="50" selection-end-line="5" selection-end-column="50" />
+              <folding>
+                <element signature="e#454#459#0" expanded="true" />
+                <element signature="e#487#492#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -272,7 +262,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/models/NormalMove.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/models/Jump.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/models/BoardState.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/GameResponse.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/controllers/GameController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/config/WebSocketConfig.java" />
@@ -282,16 +271,17 @@
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/BoardState.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/GameState.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/models/UserMove.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/checkers/models/Message.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/brokers/BoardStateEncoder.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/config/Room.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/ReaderDB.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/SaverDB.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/checkers/config/GameEndpoint.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/models/Place.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/models/Board.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/models/Move.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/models/Game.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/checkers/models/Message.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/checkers/config/GameEndpoint.java" />
       </list>
     </option>
   </component>
@@ -343,7 +333,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -438,6 +427,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -736,7 +726,8 @@
       <workItem from="1559200749800" duration="1339000" />
       <workItem from="1559212494878" duration="5352000" />
       <workItem from="1559336041937" duration="2717000" />
-      <workItem from="1559383900475" duration="9153000" />
+      <workItem from="1559383900475" duration="9935000" />
+      <workItem from="1559469436630" duration="4963000" />
     </task>
     <task id="LOCAL-00001" summary="Start">
       <created>1554819235594</created>
@@ -808,11 +799,18 @@
       <option name="project" value="LOCAL" />
       <updated>1559159140672</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Searching for available places to jump/move finished">
+      <created>1559401353873</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1559401353873</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="235640000" />
+    <option name="totallyTimeSpent" value="241385000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -827,7 +825,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49716714" visible="true" weight="0.2" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49716714" visible="true" weight="0.20268457" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24966443" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -916,7 +914,8 @@
     <MESSAGE value="Database running&#10;Websocket added" />
     <MESSAGE value="Endpoint added" />
     <MESSAGE value="Endpoint configuration finished" />
-    <option name="LAST_COMMIT_MESSAGE" value="Endpoint configuration finished" />
+    <MESSAGE value="Searching for available places to jump/move finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="Searching for available places to jump/move finished" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/hello/HelloMessage.java" />
@@ -1080,51 +1079,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/config/GameEndpoint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="43" column="18" selection-start-line="43" selection-start-column="18" selection-end-line="43" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="55" selection-start-line="19" selection-start-column="55" selection-end-line="19" selection-end-column="55" />
-          <folding>
-            <element signature="e#454#459#0" expanded="true" />
-            <element signature="e#487#492#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/SaverDB.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/brokers/BoardStateEncoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/brokers/UserMoveDecoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1148,17 +1106,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Message.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="20" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/brokers/Game.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/PieceColor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="11" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
         </state>
       </provider>
     </entry>
@@ -1197,23 +1156,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/brokers/Game.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="228" column="50" selection-start-line="228" selection-start-column="45" selection-end-line="228" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="45" selection-start-line="45" selection-end-line="45" />
+        <state relative-caret-position="85">
+          <caret line="5" column="50" lean-forward="true" selection-start-line="5" selection-start-column="50" selection-end-line="5" selection-end-column="50" />
+          <folding>
+            <element signature="e#454#459#0" expanded="true" />
+            <element signature="e#487#492#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Move.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
+        <state relative-caret-position="340">
           <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
           <folding>
             <element signature="e#265#266#0" expanded="true" />
@@ -1228,22 +1184,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Game.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/brokers/UserMoveDecoder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="93" column="30" lean-forward="true" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
+        <state relative-caret-position="340">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3051#3978#0" />
-            <element signature="e#3984#4284#0" />
-            <element signature="e#4629#4937#0" />
-            <element signature="e#5064#5248#0" />
-            <element signature="e#5254#5504#0" />
-            <element signature="e#5254#5693#0" />
-            <element signature="e#5699#7014#0" />
-            <element signature="e#7095#10567#0" />
-            <element signature="e#7021#8027#0" />
-            <element signature="e#8033#10423#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/brokers/BoardStateEncoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="69" column="5" lean-forward="true" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/models/Message.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="471">
+          <caret line="51" column="19" selection-start-line="51" selection-start-column="19" selection-end-line="51" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/config/GameEndpoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="51" column="9" lean-forward="true" selection-start-line="51" selection-start-column="9" selection-end-line="51" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

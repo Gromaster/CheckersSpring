@@ -41,14 +41,19 @@ public class GameEndpoint {
             game.setWhiteUser_id(message.getUserId());
         }
 
-        game.makeMove(message.getMoveString()); //dodać wyrzucanie błędu jeśli ruch niewłaściwy
-
-        broadcast(game,message);
-
-        game.switchPlayer();
-
+        try {
+            game.makeMove(message.getMoveString());
+            broadcast(game,message);
+            game.switchPlayer();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Message withoutChange = new Message();
+            broadcast(game,message.eraseMovement());
+        }
         saverDB.save(game);
     }
+
+
 
     private void broadcast(Game game,Message message) {
         try {

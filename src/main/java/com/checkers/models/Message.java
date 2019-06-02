@@ -8,6 +8,7 @@ public class Message {
     private String moveString;
 
 
+
     public Message() {
     }
 
@@ -46,5 +47,10 @@ public class Message {
 
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    public Message eraseMovement(){
+        String[] moveString = this.moveString.split("-");
+        return new Message(this.gameId,this.userId,String.format("%s-%s",moveString[0],moveString[0]));
     }
 }

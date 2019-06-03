@@ -10,11 +10,12 @@ public class Place {
 
     public Place(char column, int row) {
         this.column = column;
+        if(row>40) row-=48;
         this.row = row;
     }
 
     public Place(String s) {
-        this(s.charAt(0), s.charAt(1));
+        this(s.charAt(0), Integer.parseInt(s.substring(1)));
     }
 
     public PieceColor getColorOfPieceOccupying() {

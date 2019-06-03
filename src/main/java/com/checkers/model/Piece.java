@@ -6,11 +6,14 @@ public abstract class Piece implements Movable {
     private final PieceColor color;
     private PieceType pieceType;
     private Place place;
-    private ArrayList<Place> possibleMoves;
 
     public Piece(PieceColor color, PieceType pieceType) {
         this.color = color;
         this.pieceType = pieceType;
+    }
+
+    public Piece(PieceColor color) {
+        this.color = color;
     }
 
 
@@ -34,14 +37,6 @@ public abstract class Piece implements Movable {
         this.place = place;
     }
 
-    public ArrayList<Place> getPossibleMoves() {
-        return possibleMoves;
-    }
-
-    public void setPossibleMoves(ArrayList<Place> possibleMoves) {
-        this.possibleMoves = possibleMoves;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,5 +54,14 @@ public abstract class Piece implements Movable {
         int result = color != null ? color.hashCode() : 0;
         result = 31 * result + (place != null ? place.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Piece{" +
+                "color=" + color +
+                ", pieceType=" + pieceType +
+                ", place=" + place +
+                '}';
     }
 }

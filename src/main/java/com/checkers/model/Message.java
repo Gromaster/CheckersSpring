@@ -5,7 +5,7 @@ import java.util.Date;
 public class Message {
     private int gameId;
     private int userId;
-    private Date movementTime;
+    //private Date movementTime;
     private String moveString;
 
 
@@ -13,10 +13,9 @@ public class Message {
     public Message() {
     }
 
-    public Message(int gameId, int userId, Date movementTime, String moveString) {
+    public Message(int gameId, int userId, String moveString) {
         this.gameId = gameId;
         this.userId = userId;
-        this.movementTime = movementTime;
         this.moveString = moveString;
     }
 
@@ -26,11 +25,13 @@ public class Message {
         this.userId = Integer.parseInt(s[1]);
         this.moveString = s[2];
     }
+/*
 
     public Message eraseMovement(){
         String[] moveString = this.moveString.split("-");
         return new Message(this.gameId,this.userId,this.movementTime,String.format("%s-%s",moveString[0],moveString[0]));
     }
+*/
 
     public int getUserId() {
         return userId;
@@ -56,11 +57,17 @@ public class Message {
         this.gameId = gameId;
     }
 
-    public Date getMovementTime() {
-        return movementTime;
+    public void winner(int winner) {
+        moveString="win-" + winner;
     }
 
-    public void setMovementTime(Date movementTime) {
-        this.movementTime = movementTime;
+    @Override
+    public String toString() {
+        return "Message{" +
+                "gameId=" + gameId +
+                ", userId=" + userId +
+                //", movementTime=" + movementTime +
+                ", moveString='" + moveString + '\'' +
+                '}';
     }
 }

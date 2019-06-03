@@ -3,7 +3,7 @@ package com.checkers.hibernate.util;
 import com.checkers.model.Game;
 
 public class GameResponse {
-    String content;
+    private String content;
 
     public GameResponse() {
     }
@@ -12,7 +12,7 @@ public class GameResponse {
         this.content = content;
     }
 
-    public GameResponse(Game game) {//TODO ma wysyłać całą planszę
+    public GameResponse(Game game) {
         this.content = "Game id: " + game.getId() + "\t White user id: " + game.getWhiteUser_id() + "\t Black user id: " + game.getBlackUser_id();
     }
 

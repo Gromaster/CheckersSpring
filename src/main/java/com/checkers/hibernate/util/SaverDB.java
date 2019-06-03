@@ -17,7 +17,7 @@ public class SaverDB {
     public void save(Game game) {
         session = sessionFactory.openSession();
         session.beginTransaction();
-        session.save(game);
+        session.saveOrUpdate(game);
         session.getTransaction().commit();
     }
 

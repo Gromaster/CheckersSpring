@@ -7,6 +7,9 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
+@Entity
+@Table(name = "game")
 public class Game {
 
     @Id
@@ -19,21 +22,19 @@ public class Game {
     @Column(name = "blackUser")
     private int blackUser_id;
 
-    @Column(name = "gameState")
-    private String gameState;
+    @Column(name = "boardState")
+    private String boardState;
 
     @Column(name = "currentPlayerId")
     private int currentPlayerId;
 
 
     @Transient
-    private Board board;
+    private Board board=new Board();
     @Transient
     private ArrayList<BlackPiece> blackTeamPieces;
     @Transient
     private ArrayList<WhitePiece> whiteTeamPieces;
-    @Transient
-    private Results results;
 
     public Game(int id, int userId) {
         this.id = id;
@@ -58,9 +59,8 @@ public class Game {
     }
 
     private void startGame() {
-        board = new Board();
         initStartingPositions();
-        results = new Results();
+
     }
 
     public void makeMove(String moveString) {
@@ -71,18 +71,22 @@ public class Game {
         for (int i = 0; i < (path.size() - 1); i++) {
             move.add(new Move(path.get(i), path.get(i + 1)));
         }
+        System.out.println("\n\n*************************\n\n" + move.get(0).getOrigin() + " " + move.get(0).getDestination() + "\n***********************");
+        System.out.println(isMovePossible(move));
         if (isMovePossible(move))
             makeMove(move);
         else throw new PlayerError("Unexpected move");
-        setGameState(makeString4GameState());
+        setBoardState(makeString4BoardState());
     }
 
     private boolean isMovePossible(ArrayList<Move> moveList) {
-        Piece piece = moveList.get(0).getOrigin().getPieceOccupying();
-        if (piece == null) return false;
+        Piece piece = board.getPlace(moveList.get(0).getOrigin()).getPieceOccupying();
+        if (piece == null) {
+            System.out.println("******************\n\nPiece is null");
+            return false;
+        }
         for (Move m : moveList) {
             if (!isSingleMovePossible(m, piece)) return false;
-
         }
         return true;
     }
@@ -90,11 +94,16 @@ public class Game {
     private boolean isSingleMovePossible(Move m, Piece piece) {
 
         int distance = board.distance(m.getOrigin(), m.getDestination());
-        if(canJump(piece)){
-            if(distance == 1)return false;
+        if (canJump(piece)) {
+            System.out.println("***********\n\nCan Jump");
+            if (distance == 1) {
+                System.out.println("********************************************\nDystans = 1 i może skoczyć\n********************************************************");
+                return false;
+            }
+            System.out.println("***********\n\nsearching if list of available jumps contains");
             return findListOfAvailableJumps(piece, m.getOrigin()).contains(m);
-        }
-        else {
+        } else {
+            System.out.println("***********\n\nsearching if list of available moves contains");
             return findListOfAvailableMoves(piece).contains(m);
         }
     }
@@ -184,7 +193,7 @@ public class Game {
                 for (int i = 0; i < 2; i++) {
                     Place placeOfInterest = new Place((char) (placeOfOrigin.getColumn() + piece.moveVector[i][0]), placeOfOrigin.getRow() + piece.moveVector[i][1]);
                     if (!placeOfInterest.isOutOfBoard() && board.getPlace(placeOfInterest).getPieceOccupying() == null)
-                        validMoves.add(new Move(placeOfOrigin,placeOfInterest));
+                        validMoves.add(new Move(placeOfOrigin, placeOfInterest));
                 }
                 break;
             case KING:
@@ -192,7 +201,7 @@ public class Game {
                     for (int j = -1; j < 2; j += 2) {
                         Place placeOfInterest = new Place((char) (placeOfOrigin.getColumn() + i), placeOfOrigin.getRow() + j);
                         while (!placeOfInterest.isOutOfBoard() && board.getPlace(placeOfInterest).getPieceOccupying() == null) {
-                            validMoves.add(new Move(placeOfOrigin,placeOfInterest));
+                            validMoves.add(new Move(placeOfOrigin, placeOfInterest));
                             placeOfInterest = new Place((char) (placeOfInterest.getColumn() + i), placeOfInterest.getRow() + j);
                         }
                     }
@@ -215,7 +224,7 @@ public class Game {
                         if (board.getPlace(placeNextToPiece).getPieceOccupying().getColor() != piece.getColor()
                                 && (board.getPlace(placeBehindPlaceNextToPiece).getPieceOccupying() == null ||
                                 board.getPlace(placeBehindPlaceNextToPiece).getPieceOccupying() == piece)) {//case of possible jump
-                            validJumps.add(new Move(placeOfOrigin,placeBehindPlaceNextToPiece));
+                            validJumps.add(new Move(placeOfOrigin, placeBehindPlaceNextToPiece));
                         }
                     }
                 }
@@ -274,10 +283,13 @@ public class Game {
                         Place placeNextToPiece = new Place((char) (placeOfOrigin.getColumn() + i), placeOfOrigin.getRow() + j);
                         Place placeBehindPlaceNextToPiece = new Place((char) (placeNextToPiece.getColumn() + i), placeNextToPiece.getRow() + j);
                         if (placeBehindPlaceNextToPiece.isOutOfBoard() || placeNextToPiece.isOutOfBoard()) continue;
-                        if (board.getPlace(placeNextToPiece).getPieceOccupying().getColor() == piece.getColor())
-                            continue;
-                        if (board.getPlace(placeNextToPiece).getPieceOccupying().getColor() != piece.getColor()
-                                && board.getPlace(placeBehindPlaceNextToPiece).getPieceOccupying() == null) return true;
+                        Piece pieceOnPlaceNextToPiece =board.getPlace(placeNextToPiece).getPieceOccupying();
+                        if(pieceOnPlaceNextToPiece!=null){
+                            if (pieceOnPlaceNextToPiece.getColor() == piece.getColor())
+                                continue;
+                            if (pieceOnPlaceNextToPiece.getColor() != piece.getColor()
+                                    && board.getPlace(placeBehindPlaceNextToPiece).getPieceOccupying() == null) return true;
+                        }
                     }
                 }
                 break;
@@ -287,12 +299,13 @@ public class Game {
                         Place placeOnWay = new Place((char) (placeOfOrigin.getColumn() + i), placeOfOrigin.getRow() + j);
                         Place placeBehindPlaceOnWay = new Place((char) (placeOnWay.getColumn() + i), placeOnWay.getRow() + j);
                         while (!placeBehindPlaceOnWay.isOutOfBoard()) {//checking in one direction
-                            //noinspection StatementWithEmptyBody
-                            if (board.getPlace(placeOnWay).getPieceOccupying() == null) {
-                            } else if (board.getPlace(placeOnWay).getPieceOccupying().getColor() == piece.getColor())
-                                break;
-                            else if (board.getPlace(placeOnWay).getPieceOccupying().getColor() != piece.getColor()
-                                    && board.getPlace(placeBehindPlaceOnWay).getPieceOccupying() == null) return true;
+                            Piece pieceOnPlacedOnWay = board.getPlace(placeOnWay).getPieceOccupying();
+                            if (pieceOnPlacedOnWay != null) {
+                                if (pieceOnPlacedOnWay.getColor() == piece.getColor())
+                                    break;
+                                if (pieceOnPlacedOnWay.getColor() != piece.getColor()
+                                        && board.getPlace(placeBehindPlaceOnWay).getPieceOccupying() == null) return true;
+                            }
                             placeOnWay = placeBehindPlaceOnWay;
                             placeBehindPlaceOnWay = new Place((char) (placeBehindPlaceOnWay.getColumn() + i), placeBehindPlaceOnWay.getRow() + j);
                         }
@@ -306,22 +319,11 @@ public class Game {
         initBlackTeam();
         initWhiteTeam();
         checkStartingBoard();
-    }
-
-    private void checkStartingBoard() {
-        for (Place p : board.getPlaces()) {
-            if (p.getRow() <= 3 && p.getPieceOccupying().getClass() != WhitePiece.class)
-                throw new RuntimeException("Wrong initialization, not White in row<3");
-            else if (p.getRow() <= 5 && p.getPieceOccupying() != null)
-                throw new RuntimeException("Wrong initialization, not null in 3<row<6");
-            else if (p.getRow() <= 8 && p.getPieceOccupying().getClass() != BlackPiece.class)
-                throw new RuntimeException("Wrong initialization, not Black in row>5");
-        }
-
+        this.boardState = makeString4BoardState();
     }
 
     private void initBlackTeam() {
-        blackTeamPieces = new ArrayList<BlackPiece>(12);
+        blackTeamPieces = new ArrayList<>(12);
         Collections.reverse(board.getPlaces());
         if (board.getPlaces().get(0).getRow() != 8)
             throw new RuntimeException("Reverse during initialization of Black Team failed");
@@ -336,11 +338,28 @@ public class Game {
     }
 
     private void initWhiteTeam() {
+        whiteTeamPieces = new ArrayList<>(12);
         for (int i = 0; i < 12; i++) {
             WhitePiece newWhite = new WhitePiece(PieceType.MEN);
             board.getPlaces().get(i).setPieceOccupying(newWhite);
             whiteTeamPieces.add(newWhite);
         }
+    }
+
+    private void checkStartingBoard() {
+        for (Place p : board.getPlaces()) {
+            if (p.getPieceOccupying() != null)
+                System.out.println(p.getPieceOccupying().toString());
+            int rowOfPiece = p.getRow();
+            if (rowOfPiece <= 3 && p.getPieceOccupying().getClass() != WhitePiece.class) {
+                throw new RuntimeException("Wrong initialization, not White in row<3");
+            } else if (rowOfPiece >= 4 && rowOfPiece <= 5 && p.getPieceOccupying() != null) {
+                throw new RuntimeException("Wrong initialization, not null in 3<row<6");
+            } else if (rowOfPiece >= 6 && p.getPieceOccupying().getClass() != BlackPiece.class) {
+                throw new RuntimeException("Wrong initialization, not Black in row>5");
+            }
+        }
+
     }
 
     public void setStringToParse(String stringToParse) {
@@ -350,7 +369,7 @@ public class Game {
         this.blackUser_id = parsed.get(2);
     }
 
-    public String makeString4GameState() {
+    public String makeString4BoardState() {
         StringBuilder gameState = new StringBuilder();
         for (Piece p : whiteTeamPieces) {
             gameState.append(stringRepresentationOfPiece(p));
@@ -360,24 +379,23 @@ public class Game {
             gameState.append(stringRepresentationOfPiece(p));
             gameState.append("-");
         }
-        setGameState(gameState.toString());
+        setBoardState(gameState.toString());
         return gameState.toString();
     }
 
     private String stringRepresentationOfPiece(Piece piece) {
-        String result = "";
-        result += (piece.getColor() == PieceColor.WHITE ? "w" : "b");
-        result += (piece.getPieceType() == PieceType.KING ? "k" : "p");
-        result += piece.getPlace().toString();
-        return result;
+        String builder = (piece.getColor() == PieceColor.WHITE ? "w" : "b") +
+                (piece.getPieceType() == PieceType.KING ? "k" : "p") +
+                piece.getPlace().toString();
+        return builder;
     }
 
-    public String getGameState() {
-        return gameState;
+    public String getBoardState() {
+        return boardState;
     }
 
-    public void setGameState(String gameState) {
-        this.gameState = gameState;
+    public void setBoardState(String gameState) {
+        this.boardState = gameState;
     }
 
     public int getId() {
@@ -393,6 +411,7 @@ public class Game {
     }
 
     public void setWhiteUser_id(int whiteUser_id) {
+        this.currentPlayerId = whiteUser_id;
         this.whiteUser_id = whiteUser_id;
     }
 
@@ -431,6 +450,45 @@ public class Game {
 
     public void switchPlayer() {
         currentPlayerId = (currentPlayerId == whiteUser_id ? blackUser_id : whiteUser_id);
+    }
+
+    public boolean checkIfEnd() {
+        return whiteTeamPieces.size() == 0 || blackTeamPieces.size() == 0;
+    }
+
+    public int winner() {
+        if (whiteTeamPieces.size() == 0) return blackUser_id;
+        if (blackTeamPieces.size() == 0) return whiteUser_id;
+        return 0;
+    }
+
+    public void readBoardState() {
+        String[] string = boardState.split("-");
+        for(String s:string)
+            analyzeStringPositions(s);
+    }
+
+    private void analyzeStringPositions(String string) {
+        Piece piece ;
+        switch (string.charAt(0)){
+            case 'w':
+                piece=new WhitePiece();
+                break;
+            case 'b':
+                piece=new BlackPiece();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + string.charAt(0));
+        }
+        switch (string.charAt(1)){
+            case 'k':
+                piece.setPieceType(PieceType.KING);
+                break;
+            case 'p':
+                piece.setPieceType(PieceType.MEN);
+                break;
+        }
+        board.getPlace(new Place(string.substring(2))).setPieceOccupying(piece);
     }
 
     private class PlayerError extends RuntimeException {

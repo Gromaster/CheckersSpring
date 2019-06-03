@@ -46,4 +46,15 @@ public class Board {
 
         return Math.max(Math.abs(origin.getColumn() - destination.getColumn()), Math.abs(origin.getRow() - destination.getRow()));
     }
+
+    @Override
+    public String toString() {
+        StringBuilder str= new StringBuilder();
+        for(Place place:places) {
+            str.append(place.toString());
+            if(place.getPieceOccupying()==null)str.append("no piece");
+            else str.append(place.getPieceOccupying().toString());
+        }
+        return str.toString();
+    }
 }

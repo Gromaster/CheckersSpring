@@ -10,4 +10,7 @@ public class BlackPiece extends Piece {
     }
 
 
+    public BlackPiece() {
+        super(PieceColor.BLACK);
+    }
 }

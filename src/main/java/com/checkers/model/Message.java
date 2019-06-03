@@ -9,7 +9,6 @@ public class Message {
     private String moveString;
 
 
-
     public Message() {
     }
 
@@ -58,7 +57,7 @@ public class Message {
     }
 
     public void winner(int winner) {
-        moveString="win-" + winner;
+        moveString = "win-" + winner;
     }
 
     @Override

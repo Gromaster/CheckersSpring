@@ -4,12 +4,12 @@ public class Move {
     private Place origin;
     private Place destination;
 
-    public Move(Place origin, Place destination) {
+    Move(Place origin, Place destination) {
         this.origin = origin;
         this.destination = destination;
     }
 
-    public Place getOrigin() {
+    Place getOrigin() {
         return origin;
     }
 
@@ -17,7 +17,7 @@ public class Move {
         this.origin = origin;
     }
 
-    public Place getDestination() {
+    Place getDestination() {
         return destination;
     }
 

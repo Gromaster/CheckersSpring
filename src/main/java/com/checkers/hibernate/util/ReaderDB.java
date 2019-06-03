@@ -15,8 +15,7 @@ public class ReaderDB {
 
     public Game load(int gameId) {
         Session session = sessionFactory.openSession();
-        Game game = session.get(Game.class, gameId);
-        return game;
+        return session.get(Game.class, gameId);
     }
 
 }

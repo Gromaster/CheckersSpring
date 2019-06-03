@@ -5,7 +5,7 @@ function connect() {
     ws = new WebSocket("ws://" + document.location.host + "/CheckersSpring_war_exploded/game/" + userId);
     var gameId = document.getElementById("gameId").value;
 
-    ws.onmessage = function(event) {
+    ws.onmessage = function (event) {
         var log = document.getElementById("log");
         console.log(event.data);
         var message = JSON.parse(event.data);
@@ -18,9 +18,9 @@ function send() {
     var userId = document.getElementById("userId").value;
     var gameId = document.getElementById("gameId").value;
     var json = JSON.stringify({
-        "gameId":gameId,
-        "userId":userId,
-        "moveString":moveString
+        "gameId": gameId,
+        "userId": userId,
+        "moveString": moveString
 
     });
 

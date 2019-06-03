@@ -44,7 +44,7 @@ public class GameEndpoint {
         game.readBoardState();
         System.out.println(game.getBoard().toString());
 
-        if (message.getUserId() == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0){
+        if (message.getUserId() == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
             try {
                 game.makeMove(message.getMoveString());
                 if (game.checkIfEnd())

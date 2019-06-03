@@ -4,8 +4,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Entity
@@ -30,7 +28,7 @@ public class Game {
 
 
     @Transient
-    private Board board=new Board();
+    private Board board = new Board();
     @Transient
     private ArrayList<BlackPiece> blackTeamPieces;
     @Transient
@@ -71,8 +69,6 @@ public class Game {
         for (int i = 0; i < (path.size() - 1); i++) {
             move.add(new Move(path.get(i), path.get(i + 1)));
         }
-        System.out.println("\n\n*************************\n\n" + move.get(0).getOrigin() + " " + move.get(0).getDestination() + "\n***********************");
-        System.out.println(isMovePossible(move));
         if (isMovePossible(move))
             makeMove(move);
         else throw new PlayerError("Unexpected move");
@@ -82,7 +78,7 @@ public class Game {
     private boolean isMovePossible(ArrayList<Move> moveList) {
         Piece piece = board.getPlace(moveList.get(0).getOrigin()).getPieceOccupying();
         if (piece == null) {
-            System.out.println("******************\n\nPiece is null");
+            System.out.println("***********\n\nPiece is null");
             return false;
         }
         for (Move m : moveList) {
@@ -97,7 +93,7 @@ public class Game {
         if (canJump(piece)) {
             System.out.println("***********\n\nCan Jump");
             if (distance == 1) {
-                System.out.println("********************************************\nDystans = 1 i może skoczyć\n********************************************************");
+                System.out.println("***********\nDystans = 1 i może skoczyć\n***********");
                 return false;
             }
             System.out.println("***********\n\nsearching if list of available jumps contains");
@@ -124,65 +120,16 @@ public class Game {
             switch (piece2Remove.getColor()) {
                 case BLACK:
                     blackTeamPieces.remove(piece2Remove);
-                    board.setPieceOnPlaces(place2Empty, null);
+                    board.emptyPlace(place2Empty);
                     break;
                 case WHITE:
                     whiteTeamPieces.remove(piece2Remove);
-                    board.setPieceOnPlaces(place2Empty, null);
+                    board.emptyPlace(place2Empty);
             }
 
         }
         board.getPlace(move.getDestination()).setPieceOccupying(piece);
         piece.setPlace(move.getDestination());
-    }
-
-    private <T extends Piece> ArrayList<T> findAllMovablePieces(ArrayList<T> team) {
-        ArrayList<T> movablePieces = new ArrayList<>();
-        for (int i = 0; i < team.size(); i++) {
-            if (canMove(team.get(i))) movablePieces.add(team.get(i));
-        }
-        return movablePieces;
-    }
-
-    private <T extends Piece> ArrayList<Move> findAllMovesPossible(Piece piece) {
-        if (piece.getColor() == PieceColor.BLACK) {
-            piece = findPieceInTeam(piece, blackTeamPieces);
-        } else {
-            piece = findPieceInTeam(piece, whiteTeamPieces);
-        }
-        return findListOfAvailableMoves(piece);
-    }
-
-    private <T extends Piece> Piece findPieceInTeam(Piece piece, ArrayList<T> team) {
-        for (int i = 0; i < team.size(); i++) {
-            if (piece.getPlace().equals(team.get(i).getPlace())) return team.get(i);
-        }
-        throw new RuntimeException("Failed to find searching piece in team");
-    }
-
-    private <T extends Piece> boolean checkIfRanOutOfPieces(ArrayList<T> team) {
-        return team.size() == 0;
-    }
-
-    private <T extends Piece> boolean canTeamMove(ArrayList<T> team) {
-        for (Piece piece : team) {
-            if (canMove(piece)) return true;
-        }
-        return false;
-    }
-
-    /**
-     * Checking if any of team member can make a jump
-     *
-     * @param team pieces belonging to team organized in ArrayList
-     * @param <T>  class of pieces(white or black)
-     * @return true if any member can jump, otherwise false
-     */
-    private <T extends Piece> boolean canTeamJump(ArrayList<T> team) {
-        for (Piece piece : team) {
-            if (canJump(piece)) return true;
-        }
-        return false;
     }
 
     private ArrayList<Move> findListOfAvailableMoves(Piece piece) {
@@ -252,28 +199,6 @@ public class Game {
         return validJumps;
     }
 
-    private boolean canMove(Piece piece) {
-        Place placeOfOrigin = piece.getPlace();
-        switch (piece.getPieceType()) {
-            case MEN:
-                for (int i = 0; i < 2; i++) {
-                    Place placeNextToPiece = new Place((char) (placeOfOrigin.getColumn() + piece.moveVector[i][0]), placeOfOrigin.getRow() + piece.moveVector[i][1]);
-                    if (!placeNextToPiece.isOutOfBoard() && board.getPlace(placeNextToPiece).getPieceOccupying() == null)
-                        return true;
-                }
-                break;
-            case KING:
-                for (int i = -1; i < 2; i += 2) {
-                    for (int j = -1; j < 2; j += 2) {
-                        Place placeOnWay = new Place((char) (placeOfOrigin.getColumn() + i), placeOfOrigin.getRow() + j);
-                        if (!placeOnWay.isOutOfBoard() && board.getPlace(placeOnWay).getPieceOccupying() == null)
-                            return true;
-                    }
-                }
-        }
-        return false;
-    }
-
     private boolean canJump(Piece piece) {
         Place placeOfOrigin = piece.getPlace();
         switch (piece.getPieceType()) {
@@ -283,12 +208,13 @@ public class Game {
                         Place placeNextToPiece = new Place((char) (placeOfOrigin.getColumn() + i), placeOfOrigin.getRow() + j);
                         Place placeBehindPlaceNextToPiece = new Place((char) (placeNextToPiece.getColumn() + i), placeNextToPiece.getRow() + j);
                         if (placeBehindPlaceNextToPiece.isOutOfBoard() || placeNextToPiece.isOutOfBoard()) continue;
-                        Piece pieceOnPlaceNextToPiece =board.getPlace(placeNextToPiece).getPieceOccupying();
-                        if(pieceOnPlaceNextToPiece!=null){
+                        Piece pieceOnPlaceNextToPiece = board.getPlace(placeNextToPiece).getPieceOccupying();
+                        if (pieceOnPlaceNextToPiece != null) {
                             if (pieceOnPlaceNextToPiece.getColor() == piece.getColor())
                                 continue;
                             if (pieceOnPlaceNextToPiece.getColor() != piece.getColor()
-                                    && board.getPlace(placeBehindPlaceNextToPiece).getPieceOccupying() == null) return true;
+                                    && board.getPlace(placeBehindPlaceNextToPiece).getPieceOccupying() == null)
+                                return true;
                         }
                     }
                 }
@@ -304,7 +230,8 @@ public class Game {
                                 if (pieceOnPlacedOnWay.getColor() == piece.getColor())
                                     break;
                                 if (pieceOnPlacedOnWay.getColor() != piece.getColor()
-                                        && board.getPlace(placeBehindPlaceOnWay).getPieceOccupying() == null) return true;
+                                        && board.getPlace(placeBehindPlaceOnWay).getPieceOccupying() == null)
+                                    return true;
                             }
                             placeOnWay = placeBehindPlaceOnWay;
                             placeBehindPlaceOnWay = new Place((char) (placeBehindPlaceOnWay.getColumn() + i), placeBehindPlaceOnWay.getRow() + j);
@@ -362,14 +289,7 @@ public class Game {
 
     }
 
-    public void setStringToParse(String stringToParse) {
-        ArrayList<Integer> parsed = Stream.of(stringToParse.split("/")).map(Integer::parseInt).collect(Collectors.toCollection(ArrayList::new));
-        this.id = parsed.get(0);
-        this.whiteUser_id = parsed.get(1);
-        this.blackUser_id = parsed.get(2);
-    }
-
-    public String makeString4BoardState() {
+    private String makeString4BoardState() {
         StringBuilder gameState = new StringBuilder();
         for (Piece p : whiteTeamPieces) {
             gameState.append(stringRepresentationOfPiece(p));
@@ -394,7 +314,7 @@ public class Game {
         return boardState;
     }
 
-    public void setBoardState(String gameState) {
+    private void setBoardState(String gameState) {
         this.boardState = gameState;
     }
 
@@ -464,23 +384,23 @@ public class Game {
 
     public void readBoardState() {
         String[] string = boardState.split("-");
-        for(String s:string)
+        for (String s : string)
             analyzeStringPositions(s);
     }
 
     private void analyzeStringPositions(String string) {
-        Piece piece ;
-        switch (string.charAt(0)){
+        Piece piece;
+        switch (string.charAt(0)) {
             case 'w':
-                piece=new WhitePiece();
+                piece = new WhitePiece();
                 break;
             case 'b':
-                piece=new BlackPiece();
+                piece = new BlackPiece();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + string.charAt(0));
         }
-        switch (string.charAt(1)){
+        switch (string.charAt(1)) {
             case 'k':
                 piece.setPieceType(PieceType.KING);
                 break;

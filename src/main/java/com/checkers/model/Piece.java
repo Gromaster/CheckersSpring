@@ -1,39 +1,36 @@
 package com.checkers.model;
 
-import java.util.ArrayList;
-
 public abstract class Piece implements Movable {
     private final PieceColor color;
     private PieceType pieceType;
     private Place place;
 
-    public Piece(PieceColor color, PieceType pieceType) {
+    Piece(PieceColor color, PieceType pieceType) {
         this.color = color;
         this.pieceType = pieceType;
     }
 
-    public Piece(PieceColor color) {
+    Piece(PieceColor color) {
         this.color = color;
     }
 
-
-    public PieceColor getColor() {
+    PieceColor getColor() {
         return color;
     }
 
-    public PieceType getPieceType() {
+    PieceType getPieceType() {
         return pieceType;
     }
 
-    public void setPieceType(PieceType pieceType) {
+    void setPieceType(PieceType pieceType) {
         this.pieceType = pieceType;
     }
 
-    public Place getPlace() {
+    Place getPlace() {
         return place;
     }
 
-    public void setPlace(Place place) {
+    void setPlace(Place place) {
         this.place = place;
     }
 

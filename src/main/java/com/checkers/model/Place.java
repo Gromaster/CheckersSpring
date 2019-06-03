@@ -1,6 +1,8 @@
 package com.checkers.model;
 
 
+import com.sun.istack.Nullable;
+
 public class Place {
     private final char column;
     private final int row;
@@ -8,46 +10,36 @@ public class Place {
     private PieceColor colorOfPieceOccupying = null;
 
 
-    public Place(char column, int row) {
+    Place(char column, int row) {
         this.column = column;
-        if(row>40) row-=48;
+        if (row > 40) row -= 48;
         this.row = row;
     }
 
-    public Place(String s) {
+    Place(String s) {
         this(s.charAt(0), Integer.parseInt(s.substring(1)));
     }
 
-    public PieceColor getColorOfPieceOccupying() {
-        return colorOfPieceOccupying;
-    }
-
-    public void setColorOfPieceOccupying(PieceColor colorOfPieceOccupying) {
-        if (this.colorOfPieceOccupying != null) throw new RuntimeException("Trying to place one piece over another");
-        this.colorOfPieceOccupying = colorOfPieceOccupying;
-    }
-
-    public Piece getPieceOccupying() {
+    Piece getPieceOccupying() {
         return pieceOccupying;
     }
 
-    public void setPieceOccupying(Piece pieceOccupying) {
+    void setPieceOccupying(@Nullable Piece pieceOccupying) {
         pieceOccupying.setPlace(this);
         this.pieceOccupying = pieceOccupying;
     }
 
-    public char getColumn() {
+    char getColumn() {
         return column;
     }
 
-    public int getRow() {
+    int getRow() {
         return row;
     }
 
-    public boolean isOutOfBoard() {
+    boolean isOutOfBoard() {
         if (column < 'A' || column > 'H') return true;
-        if (row < 1 || row > 8) return true;
-        return false;
+        return row < 1 || row > 8;
     }
 
     @Override
@@ -72,7 +64,7 @@ public class Place {
         return column + Integer.toString(row);
     }
 
-    public void free() {
+    void free() {
         this.pieceOccupying = null;
     }
 

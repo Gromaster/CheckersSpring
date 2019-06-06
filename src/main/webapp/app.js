@@ -2,7 +2,7 @@ var ws;
 
 function connect() {
     var userId = document.getElementById("userId").value;
-    ws = new WebSocket("ws://" + document.location.host + "/CheckersSpring_war_exploded/game/" + userId);
+    ws = new WebSocket("ws://" + document.location.host + "/game/" + userId);
     var gameId = document.getElementById("gameId").value;
 
     ws.onmessage = function (event) {

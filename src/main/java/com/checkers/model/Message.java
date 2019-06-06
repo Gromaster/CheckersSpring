@@ -5,11 +5,18 @@ import java.util.Date;
 public class Message {
     private int gameId;
     private int userId;
-    //private Date movementTime;
+    private int currentPlayer;
     private String moveString;
 
 
     public Message() {
+    }
+
+    public Message(int gameId, int userId, int currentPlayer, String moveString) {
+        this.gameId = gameId;
+        this.userId = userId;
+        this.currentPlayer = currentPlayer;
+        this.moveString = moveString;
     }
 
     public Message(int gameId, int userId, String moveString) {
@@ -31,6 +38,14 @@ public class Message {
         return new Message(this.gameId,this.userId,this.movementTime,String.format("%s-%s",moveString[0],moveString[0]));
     }
 */
+
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 
     public int getUserId() {
         return userId;

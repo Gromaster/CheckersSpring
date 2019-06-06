@@ -86,7 +86,7 @@ public class Game {
             System.out.println("***********\n\nPiece is null");
             return false;
         }
-        if(!moveList.get(0).isJump() && canTeamJump(piece))return false;
+        if (!moveList.get(0).isJump() && canTeamJump(piece)) return false;
         for (Move m : moveList) {
             if (!isSingleMovePossible(m, piece)) return false;
         }
@@ -250,14 +250,14 @@ public class Game {
     }
 
     private boolean canTeamJump(Piece piece) {
-        switch (piece.getColor()){
+        switch (piece.getColor()) {
             case WHITE:
-                for(Piece p:whiteTeamPieces)
-                    if(canJump(p))return true;
+                for (Piece p : whiteTeamPieces)
+                    if (canJump(p)) return true;
                 break;
             case BLACK:
-                for (Piece p:blackTeamPieces)
-                    if(canJump(p))return true;
+                for (Piece p : blackTeamPieces)
+                    if (canJump(p)) return true;
         }
         return false;
     }
@@ -359,6 +359,30 @@ public class Game {
                 (piece.getPieceType() == PieceType.KING ? "k" : "p") +
                 piece.getPlace().toString();
         return builder;
+    }
+
+    public String boardStateStringToSend() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("board: [");
+        Place place;
+        Piece piece;
+        for (int rowIterator = 8; rowIterator >= 1; rowIterator--) {
+            stringBuilder.append("\n[");
+            for (char columnIterator = 'A'; columnIterator <= 'H'; columnIterator++) {
+                stringBuilder.append("\"");
+                if ((place = board.getPlace(new Place(columnIterator, rowIterator))) != null){
+                    if((piece=place.getPieceOccupying())!=null)stringBuilder.append(piece.stringToSend());
+                    else stringBuilder.append("-");
+                }
+                else stringBuilder.append("-");
+                stringBuilder.append("\"");
+                if(columnIterator!='H')stringBuilder.append(",");
+            }
+            stringBuilder.append("]");
+            if (rowIterator != 1) stringBuilder.append(",");
+        }
+        stringBuilder.append("\n]");
+        return stringBuilder.toString();
     }
 
     public String getBoardState() {

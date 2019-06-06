@@ -32,8 +32,8 @@ public class GameEndpoint {
     @OnMessage
     public void onMessage(Session session, Message message, @PathParam("userId") Integer user_Id) {
         Game game;
-        int gameId=message.getGameId();
-        int userId=message.getUserId();
+        int gameId = message.getGameId();
+        int userId = message.getUserId();
         if ((game = readerDB.load(gameId)) == null)
             game = new Game(gameId, userId);
         else if (game.getBlackUser_id() == 0 && game.getWhiteUser_id() != userId) {
@@ -43,15 +43,17 @@ public class GameEndpoint {
 
         }
         saverDB.save(game);
-        System.out.println("\n"+message.toString());
+        System.out.println("\n" + message.toString());
         game.readBoardState();
-        System.out.println("\n\n"+game.getBoard().toString());
+        System.out.println("\n\n" + game.getBoard().toString());
 
         if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
             try {
-                game.makeMove(message.getMoveString(),userId);
+                game.makeMove(message.getMoveString(), userId);
                 if (game.checkIfEnd())
                     message.winner(game.winner());
+                else message.setMoveString(game.boardStateStringToSend());
+                message.setCurrentPlayer(game.getCurrentPlayerId() == game.getWhiteUser_id() ? 0 : 1);
                 broadcast(game, message);
                 game.switchPlayer();
             } catch (Exception e) {

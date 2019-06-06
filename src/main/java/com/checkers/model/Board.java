@@ -33,7 +33,7 @@ public class Board {
     }
 
     Place getPlace(Place place) {
-        return places.get(places.indexOf(place));
+        return places.contains(place)?places.get(places.indexOf(place)):null;
     }
 
     Place placeBefore(Place place1, Place place2) {

@@ -62,4 +62,10 @@ public abstract class Piece {
                 ", place=" + place +
                 '}';
     }
+
+    String stringToSend(){
+        String str=color==PieceColor.WHITE?"r":"b";
+        if(pieceType==PieceType.KING)str+=" k";
+        return str;
+    }
 }

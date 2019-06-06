@@ -8,14 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9908fbeb-d14d-4781-ae35-e029ab997c0d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/model/BlackPiece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/model/BlackPiece.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/model/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/model/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/model/Movable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/model/Move.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/model/Move.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/model/Piece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/model/Piece.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/model/Place.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/model/Place.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/model/WhitePiece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/model/WhitePiece.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/checkers/websocket/GameEndpoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/checkers/websocket/GameEndpoint.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -68,11 +60,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="88" column="72" selection-start-line="88" selection-start-column="72" selection-end-line="88" selection-end-column="72" />
+            <state relative-caret-position="195">
+              <caret line="77" column="27" lean-forward="true" selection-start-line="77" selection-start-column="27" selection-end-line="77" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3459#3589#0" />
@@ -132,7 +124,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/Move.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
+            <state relative-caret-position="191">
               <caret line="54" column="6" selection-start-line="54" selection-start-column="6" selection-end-line="54" selection-end-column="6" />
               <folding>
                 <element signature="e#388#389#0" expanded="true" />
@@ -157,7 +149,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/BlackPiece.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
@@ -178,8 +170,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/Piece.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
+            <state relative-caret-position="-476">
+              <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
               <folding>
                 <element signature="e#323#324#0" expanded="true" />
                 <element signature="e#357#358#0" expanded="true" />
@@ -218,8 +210,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/websocket/GameEndpoint.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="44" column="21" selection-start-line="44" selection-start-column="21" selection-end-line="44" selection-end-column="21" />
+            <state relative-caret-position="120">
+              <caret line="32" column="92" selection-start-line="32" selection-start-column="92" selection-end-line="32" selection-end-column="92" />
             </state>
           </provider>
         </entry>
@@ -241,8 +233,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>sendName</find>
-      <find>respon</find>
       <find>user</find>
       <find>mysq</find>
       <find>system</find>
@@ -270,6 +260,8 @@
       <find>whitePiece</find>
       <find>board.getPlace(placeNextToPiece).getPieceOccupying()</find>
       <find>dis</find>
+      <find>message.getGameId()</find>
+      <find>message.getUserId()</find>
       <find>canJum</find>
     </findStrings>
     <replaceStrings>
@@ -279,6 +271,8 @@
       <replace>rowOfPiece</replace>
       <replace>pieceOnPlacedOnWay</replace>
       <replace>pieceToRemove</replace>
+      <replace>gameId</replace>
+      <replace>userId</replace>
       <replace>potentialPiece</replace>
     </replaceStrings>
   </component>
@@ -330,7 +324,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/hibernate/util/ReaderDB.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/app.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/index.html" />
-        <option value="$PROJECT_DIR$/src/main/java/com/checkers/websocket/GameEndpoint.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/model/Place.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/model/BlackPiece.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/model/WhitePiece.java" />
@@ -339,6 +332,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/model/Board.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/model/Move.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/checkers/model/Game.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/checkers/websocket/GameEndpoint.java" />
       </list>
     </option>
   </component>
@@ -779,7 +773,7 @@
       <workItem from="1559469436630" duration="11453000" />
       <workItem from="1559554439883" duration="2137000" />
       <workItem from="1559557145679" duration="27675000" />
-      <workItem from="1559757794272" duration="13105000" />
+      <workItem from="1559757794272" duration="14369000" />
     </task>
     <task id="LOCAL-00001" summary="Start">
       <created>1554819235594</created>
@@ -886,11 +880,18 @@
       <option name="project" value="LOCAL" />
       <updated>1559603076832</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Working moving pieces and rooms management, broadcasting">
+      <created>1559792558782</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1559792558782</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="290792000" />
+    <option name="totallyTimeSpent" value="292056000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -963,7 +964,8 @@
     <MESSAGE value="New front for testing" />
     <MESSAGE value="debuged finding available moves&#10;made current player assigment and switching between players" />
     <MESSAGE value="Cleanup of unused and deprecated code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleanup of unused and deprecated code" />
+    <MESSAGE value="Working moving pieces and rooms management, broadcasting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working moving pieces and rooms management, broadcasting" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/bab7110d-a331-4d68-b898-4aec8cf27175/console.sql">
@@ -1162,13 +1164,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/websocket/GameEndpoint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="44" column="21" selection-start-line="44" selection-start-column="21" selection-end-line="44" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/Place.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -1188,46 +1183,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/WhitePiece.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/Movable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="26" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/PieceType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/Piece.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
-          <folding>
-            <element signature="e#323#324#0" expanded="true" />
-            <element signature="e#357#358#0" expanded="true" />
-            <element signature="e#524#525#0" expanded="true" />
-            <element signature="e#566#567#0" expanded="true" />
-            <element signature="e#652#653#0" expanded="true" />
-            <element signature="e#686#687#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/BlackPiece.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -1242,9 +1201,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/websocket/GameEndpoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="32" column="92" selection-start-line="32" selection-start-column="92" selection-end-line="32" selection-end-column="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/Piece.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-476">
+          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+          <folding>
+            <element signature="e#323#324#0" expanded="true" />
+            <element signature="e#357#358#0" expanded="true" />
+            <element signature="e#524#525#0" expanded="true" />
+            <element signature="e#566#567#0" expanded="true" />
+            <element signature="e#652#653#0" expanded="true" />
+            <element signature="e#686#687#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/Move.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
+        <state relative-caret-position="191">
           <caret line="54" column="6" selection-start-line="54" selection-start-column="6" selection-end-line="54" selection-end-column="6" />
           <folding>
             <element signature="e#388#389#0" expanded="true" />
@@ -1255,10 +1236,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/PieceType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="88" column="72" selection-start-line="88" selection-start-column="72" selection-end-line="88" selection-end-column="72" />
+        <state relative-caret-position="195">
+          <caret line="77" column="27" lean-forward="true" selection-start-line="77" selection-start-column="27" selection-end-line="77" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3459#3589#0" />
@@ -1302,6 +1290,20 @@
             <element signature="e#17613#17614#0" expanded="true" />
             <element signature="e#17651#17652#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/WhitePiece.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/checkers/model/BlackPiece.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
         </state>
       </provider>
     </entry>

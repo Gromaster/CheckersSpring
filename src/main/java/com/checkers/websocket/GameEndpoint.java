@@ -32,8 +32,8 @@ public class GameEndpoint {
     @OnMessage
     public void onMessage(Session session, Message message, @PathParam("userId") Integer user_Id) {
         Game game;
-        Integer gameId=message.getGameId();
-        Integer userId=message.getUserId();
+        int gameId=message.getGameId();
+        int userId=message.getUserId();
         if ((game = readerDB.load(gameId)) == null)
             game = new Game(gameId, userId);
         else if (game.getBlackUser_id() == 0 && game.getWhiteUser_id() != userId) {

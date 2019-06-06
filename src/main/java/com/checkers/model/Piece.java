@@ -1,6 +1,7 @@
 package com.checkers.model;
 
-public abstract class Piece implements Movable {
+public abstract class Piece {
+    int[][] moveVector = new int[2][2];
     private final PieceColor color;
     private PieceType pieceType;
     private Place place;

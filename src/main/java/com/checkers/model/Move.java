@@ -43,4 +43,16 @@ public class Move {
         result = 31 * result + destination.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "origin=" + origin +
+                ", destination=" + destination +
+                '}';
+    }
+
+    public boolean isJump() {
+        return Board.distance(origin, destination) > 1;
+    }
 }

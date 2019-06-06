@@ -29,7 +29,7 @@ public class Board {
     }
 
     void emptyPlace(Place place) {
-        this.places.get(places.indexOf(place)).setPieceOccupying(null);
+        this.places.get(places.indexOf(place)).free();
     }
 
     Place getPlace(Place place) {
@@ -42,8 +42,7 @@ public class Board {
         return getPlace((char) ((int) place2.getColumn() - (int) Math.signum(vectorP1P2column)), place2.getRow() - (int) Math.signum(vectorP1P2row));
     }
 
-    int distance(Place origin, Place destination) {
-
+    static int distance(Place origin, Place destination) {
         return Math.max(Math.abs(origin.getColumn() - destination.getColumn()), Math.abs(origin.getRow() - destination.getRow()));
     }
 

@@ -26,27 +26,30 @@ public class GameEndpoint {
     public void onOpen(Session session, @PathParam("userId") Integer userId) {
         this.session = session;
         gameEndpoints.put(userId, this);
+
     }
 
     @OnMessage
-    public void onMessage(Session session, Message message, @PathParam("userId") Integer userId) {
+    public void onMessage(Session session, Message message, @PathParam("userId") Integer user_Id) {
         Game game;
-        if ((game = readerDB.load(message.getGameId())) == null)
-            game = new Game(message.getGameId(), message.getUserId());
-        else if (game.getBlackUser_id() == 0 && game.getWhiteUser_id() != message.getUserId()) {
-            game.setBlackUser_id(message.getUserId());
-        } else if (game.getWhiteUser_id() == 0 && game.getBlackUser_id() != message.getUserId()) {
-            game.setWhiteUser_id(message.getUserId());
+        Integer gameId=message.getGameId();
+        Integer userId=message.getUserId();
+        if ((game = readerDB.load(gameId)) == null)
+            game = new Game(gameId, userId);
+        else if (game.getBlackUser_id() == 0 && game.getWhiteUser_id() != userId) {
+            game.setBlackUser_id(userId);
+        } else if (game.getWhiteUser_id() == 0 && game.getBlackUser_id() != userId) {
+            game.setWhiteUser_id(userId);
 
         }
         saverDB.save(game);
-        System.out.println(message.toString());
+        System.out.println("\n"+message.toString());
         game.readBoardState();
-        System.out.println(game.getBoard().toString());
+        System.out.println("\n\n"+game.getBoard().toString());
 
-        if (message.getUserId() == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
+        if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
             try {
-                game.makeMove(message.getMoveString());
+                game.makeMove(message.getMoveString(),userId);
                 if (game.checkIfEnd())
                     message.winner(game.winner());
                 broadcast(game, message);

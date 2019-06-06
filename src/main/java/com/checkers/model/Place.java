@@ -1,6 +1,7 @@
 package com.checkers.model;
 
 
+import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 
 public class Place {
@@ -24,7 +25,7 @@ public class Place {
         return pieceOccupying;
     }
 
-    void setPieceOccupying(@Nullable Piece pieceOccupying) {
+    void setPieceOccupying(@NotNull Piece pieceOccupying) {
         pieceOccupying.setPlace(this);
         this.pieceOccupying = pieceOccupying;
     }

@@ -7,6 +7,7 @@ public class Message {
     private int userId;
     private int currentPlayer;
     private String moveString;
+    private String[][] board;
 
 
     public Message() {
@@ -17,6 +18,21 @@ public class Message {
         this.userId = userId;
         this.currentPlayer = currentPlayer;
         this.moveString = moveString;
+    }
+
+    public Message(int gameId, int userId, int currentPlayer, String moveString, String[][] board) {
+        this.gameId = gameId;
+        this.userId = userId;
+        this.currentPlayer = currentPlayer;
+        this.moveString = moveString;
+        this.board = board;
+    }
+
+    public Message(int gameId, int userId, int currentPlayer, String[][] board) {
+        this.gameId = gameId;
+        this.userId = userId;
+        this.currentPlayer = currentPlayer;
+        this.board = board;
     }
 
     public Message(int gameId, int userId, String moveString) {
@@ -83,5 +99,13 @@ public class Message {
                 //", movementTime=" + movementTime +
                 ", moveString='" + moveString + '\'' +
                 '}';
+    }
+
+    public String[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(String[][] board) {
+        this.board = board;
     }
 }

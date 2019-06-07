@@ -361,28 +361,20 @@ public class Game {
         return builder;
     }
 
-    public String boardStateStringToSend() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("board: [");
+    public String[][] boardStateStringToSend() {
+        String[][] str=new String[8][8];
         Place place;
         Piece piece;
-        for (int rowIterator = 8; rowIterator >= 1; rowIterator--) {
-            stringBuilder.append("\n[");
-            for (char columnIterator = 'A'; columnIterator <= 'H'; columnIterator++) {
-                stringBuilder.append("\"");
-                if ((place = board.getPlace(new Place(columnIterator, rowIterator))) != null){
-                    if((piece=place.getPieceOccupying())!=null)stringBuilder.append(piece.stringToSend());
-                    else stringBuilder.append("-");
+        for (int rowIterator = 0; rowIterator <= 7; rowIterator++) {
+            for (char columnIterator = 0; columnIterator <= 7; columnIterator++) {
+                if ((place = board.getPlace(new Place((char)('A'+columnIterator), rowIterator+1))) != null){
+                    if((piece=place.getPieceOccupying())!=null)str[rowIterator][columnIterator]=piece.stringToSend();
+                    else str[rowIterator][columnIterator]="-";
                 }
-                else stringBuilder.append("-");
-                stringBuilder.append("\"");
-                if(columnIterator!='H')stringBuilder.append(",");
+                else str[rowIterator][columnIterator]="-";
             }
-            stringBuilder.append("]");
-            if (rowIterator != 1) stringBuilder.append(",");
         }
-        stringBuilder.append("\n]");
-        return stringBuilder.toString();
+        return str;
     }
 
     public String getBoardState() {
@@ -463,3 +455,28 @@ public class Game {
         }
     }
 }
+
+/*
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("board: [");
+        Place place;
+        Piece piece;
+        for (int rowIterator = 8; rowIterator >= 1; rowIterator--) {
+            stringBuilder.append("\n[");
+            for (char columnIterator = 'A'; columnIterator <= 'H'; columnIterator++) {
+                stringBuilder.append("\"");
+                if ((place = board.getPlace(new Place(columnIterator, rowIterator))) != null){
+                    if((piece=place.getPieceOccupying())!=null)stringBuilder.append(piece.stringToSend());
+                    else stringBuilder.append("-");
+                }
+                else stringBuilder.append("-");
+                stringBuilder.append("\"");
+                if(columnIterator!='H')stringBuilder.append(",");
+            }
+            stringBuilder.append("]");
+            if (rowIterator != 1) stringBuilder.append(",");
+        }
+        stringBuilder.append("\n]");
+        return stringBuilder.toString();
+ */

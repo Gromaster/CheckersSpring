@@ -52,7 +52,7 @@ public class GameEndpoint {
                 game.makeMove(message.getMoveString(), userId);
                 if (game.checkIfEnd())
                     message.winner(game.winner());
-                else message.setMoveString(game.boardStateStringToSend());
+                else message.setBoard(game.boardStateStringToSend());
                 message.setCurrentPlayer(game.getCurrentPlayerId() == game.getWhiteUser_id() ? 0 : 1);
                 broadcast(game, message);
                 game.switchPlayer();

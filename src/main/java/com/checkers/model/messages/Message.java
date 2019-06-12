@@ -3,9 +3,11 @@ package com.checkers.model.messages;
 import java.util.Date;
 
 public class Message {
+    //TODO pole "type" które ma byc albo piece-click, albo move
     private int gameId;
     private int userId;
     private int currentPlayer;
+    private Integer myColor;        //value 0 - white | value 1 - black
     private String moveString;
     private String[][] board;
     private ChatMessage message;
@@ -14,7 +16,11 @@ public class Message {
     public Message() {
     }
 
-
+    public Message(int gameId, int userId, int myColor) {
+        this.gameId = gameId;
+        this.userId = userId;
+        this.myColor = myColor;
+    }
 
     public Message(int gameId, int userId, ChatMessage message) {
         this.gameId = gameId;
@@ -116,6 +122,14 @@ public class Message {
 
     public void setMessage(ChatMessage message) {
         this.message = message;
+    }
+
+    public Integer getMyColor() {
+        return myColor;
+    }
+
+    public void setMyColor(Integer myColor) {
+        this.myColor = myColor;
     }
 
     @Override

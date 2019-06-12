@@ -3,7 +3,6 @@ package com.checkers.model.game;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 
 @Entity
@@ -26,6 +25,12 @@ public class Game {
     @Column(name = "currentPlayerId")
     private int currentPlayerId;
 
+    @Column(name = "whitePlayerTimeLeft")
+    private Long whitePlayerTimeLeft;
+
+    @Column(name = "blackPlayerTimeLeft")
+    private Long blackPlayerTimeLeft;
+
 
     @Transient
     private Board board = new Board();
@@ -34,13 +39,14 @@ public class Game {
     @Transient
     private ArrayList<WhitePiece> whiteTeamPieces = new ArrayList<>();
 
-    public Game(int id, int userId) {
+    public Game(int id) {
         this.id = id;
+        /*
         Random r = new Random();
         if (r.nextBoolean())
             setWhiteUser_id(userId);
         else
-            setBlackUser_id(userId);
+            setBlackUser_id(userId);*/
         startGame();
     }
 
@@ -60,10 +66,35 @@ public class Game {
         initStartingPositions();
     }
 
+    public String[][] executeMessage(String moveString, Integer userId) {
+        ArrayList<Place> path = new ArrayList<>();
+        for (String s : moveString.split("-"))
+            path.add(new Place(s));
+        if (path.size() == 1) {//zwraca tablice mozliwych ruchow z ar/ab
+
+        }
+        else {
+            Move move = new Move(path.get(0), path.get(1));
+            Piece piece = board.getPlace(move.getOrigin()).getPieceOccupying();
+            if (piece != null && ((userId == whiteUser_id && blackTeamPieces.contains(piece)) || (userId == blackUser_id && whiteTeamPieces.contains(piece))))
+                throw new PlayerError("Trying to move not its own pieces");
+            if (isSingleMovePossible(move, piece)) {
+                System.out.println("\n*****\n" + move.toString());
+                makeSingleMove(move);
+                setBoardState(makeString4BoardState());
+                if(move.isJump() && !canJump(board.getPlace(move.getDestination()).getPieceOccupying()))
+                    switchPlayer();
+            } else throw new PlayerError("Unexpected move");
+        }
+        return boardStateStringToSend(userId);
+    }
+
+    /*
     public void makeMove(String moveString, Integer userId) {
         ArrayList<Place> path = new ArrayList<>();
         for (String s : moveString.split("-"))
             path.add(new Place(s));
+
         ArrayList<Move> move = new ArrayList<>();
         for (int i = 0; i < (path.size() - 1); i++) {
             move.add(new Move(path.get(i), path.get(i + 1)));
@@ -89,7 +120,7 @@ public class Game {
             if (!isSingleMovePossible(m, piece)) return false;
         }
         return true;
-    }
+    }*/
 
     private boolean isSingleMovePossible(Move m, Piece piece) {
 
@@ -107,14 +138,14 @@ public class Game {
             return findListOfAvailableMoves(piece).contains(m);
         }
     }
-
+/*
     private void makeMove(ArrayList<Move> moveList) {
         for (Move m : moveList) {
             makeSingleMove(m);
         }
-    }
+    }*/
 
-    private void makeSingleMove(Move move) {
+    private void makeSingleMove (Move move){
         Piece piece = board.getPlace(move.getOrigin()).getPieceOccupying();
         Place placeToEmpty = board.placeBefore(move.getOrigin(), move.getDestination());
         board.emptyPlace(move.getOrigin());
@@ -134,7 +165,7 @@ public class Game {
         board.getPlace(move.getDestination()).setPieceOccupying(piece);
     }
 
-    private ArrayList<Move> findListOfAvailableMoves(Piece piece) {
+    private ArrayList<Move> findListOfAvailableMoves (Piece piece){
         ArrayList<Move> validMoves = new ArrayList<>();
         Place placeOfOrigin = piece.getPlace();
         switch (piece.getPieceType()) {
@@ -159,7 +190,7 @@ public class Game {
         return validMoves;
     }
 
-    private ArrayList<Move> findListOfAvailableJumps(Piece piece, Place placeOfOrigin) {
+    private ArrayList<Move> findListOfAvailableJumps (Piece piece, Place placeOfOrigin){
         ArrayList<Move> validJumps = new ArrayList<>();
         switch (piece.getPieceType()) {
             case MEN:
@@ -204,7 +235,7 @@ public class Game {
         return validJumps;
     }
 
-    private boolean canJump(Piece piece) {
+    private boolean canJump (Piece piece){
         Place placeOfOrigin = piece.getPlace();
         switch (piece.getPieceType()) {
             case MEN:
@@ -247,7 +278,7 @@ public class Game {
         return false;
     }
 
-    private boolean canTeamJump(Piece piece) {
+    private boolean canTeamJump (Piece piece){
         switch (piece.getColor()) {
             case WHITE:
                 for (Piece p : whiteTeamPieces)
@@ -260,13 +291,13 @@ public class Game {
         return false;
     }
 
-    public void readBoardState() {
+    public void readBoardState () {
         String[] string = boardState.split("-");
         for (String s : string)
             analyzeStringPositions(s);
     }
 
-    private void analyzeStringPositions(String string) {
+    private void analyzeStringPositions (String string){
         Piece piece;
         switch (string.charAt(0)) {
             case 'w':
@@ -291,14 +322,14 @@ public class Game {
         board.getPlace(new Place(string.substring(2))).setPieceOccupying(piece);
     }
 
-    private void initStartingPositions() {
+    private void initStartingPositions () {
         initBlackTeam();
         initWhiteTeam();
         checkStartingBoard();
         this.boardState = makeString4BoardState();
     }
 
-    private void initBlackTeam() {
+    private void initBlackTeam () {
         blackTeamPieces = new ArrayList<>(12);
         Collections.reverse(board.getPlaces());
         if (board.getPlaces().get(0).getRow() != 8)
@@ -313,7 +344,7 @@ public class Game {
             throw new RuntimeException("Second reverse during initialization of Black Team failed");
     }
 
-    private void initWhiteTeam() {
+    private void initWhiteTeam () {
         whiteTeamPieces = new ArrayList<>(12);
         for (int i = 0; i < 12; i++) {
             WhitePiece newWhite = new WhitePiece(PieceType.MEN);
@@ -322,7 +353,7 @@ public class Game {
         }
     }
 
-    private void checkStartingBoard() {
+    private void checkStartingBoard () {
         for (Place p : board.getPlaces()) {
             if (p.getPieceOccupying() != null)
                 System.out.println(p.getPieceOccupying().toString());
@@ -338,7 +369,7 @@ public class Game {
 
     }
 
-    private String makeString4BoardState() {
+    private String makeString4BoardState () {
         StringBuilder gameState = new StringBuilder();
         for (Piece p : whiteTeamPieces) {
             gameState.append(stringRepresentationOfPiece(p));
@@ -352,80 +383,82 @@ public class Game {
         return gameState.toString();
     }
 
-    private String stringRepresentationOfPiece(Piece piece) {
-        String builder = (piece.getColor() == PieceColor.WHITE ? "w" : "b") +
+    private String stringRepresentationOfPiece (Piece piece){
+        return (piece.getColor() == PieceColor.WHITE ? "w" : "b") +
                 (piece.getPieceType() == PieceType.KING ? "k" : "p") +
                 piece.getPlace().toString();
-        return builder;
     }
 
-    public String[][] boardStateStringToSend() {
-        String[][] str=new String[8][8];
+    //TODO zrobienie w wiadomości możliwych ruchów
+    //oznaczenie ar
+    //TODO metoda opisująca plansze po kliknięciu(rozwinąć aktualną metodę budującą tablicę)
+    public String[][] boardStateStringToSend(int userId) {
+        String[][] str = new String[8][8];
         Place place;
         Piece piece;
         for (int rowIterator = 0; rowIterator <= 7; rowIterator++) {
             for (char columnIterator = 0; columnIterator <= 7; columnIterator++) {
-                if ((place = board.getPlace(new Place((char)('A'+columnIterator), rowIterator+1))) != null){
-                    if((piece=place.getPieceOccupying())!=null)str[rowIterator][columnIterator]=piece.stringToSend();
-                    else str[rowIterator][columnIterator]="-";
-                }
-                else str[rowIterator][columnIterator]="-";
+                if ((place = board.getPlace(new Place((char) ('A' + columnIterator), rowIterator + 1))) != null) {
+                    if ((piece = place.getPieceOccupying()) != null)
+                        str[rowIterator][columnIterator] = piece.stringToSend();
+                    else str[rowIterator][columnIterator] = "-";
+                } else str[rowIterator][columnIterator] = "-";
             }
         }
         return str;
     }
 
-    public String getBoardState() {
+    public String getBoardState () {
         return boardState;
     }
 
-    private void setBoardState(String gameState) {
+    private void setBoardState (String gameState){
         this.boardState = gameState;
     }
 
-    public int getId() {
+    public int getId () {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId ( int id){
         this.id = id;
     }
 
-    public int getWhiteUser_id() {
+    public int getWhiteUser_id () {
         return whiteUser_id;
     }
 
-    public void setWhiteUser_id(int whiteUser_id) {
+    public void setWhiteUser_id ( int whiteUser_id){
         this.currentPlayerId = whiteUser_id;
         this.whiteUser_id = whiteUser_id;
     }
 
-    public int getBlackUser_id() {
+    public int getBlackUser_id () {
         return blackUser_id;
     }
 
-    public void setBlackUser_id(int blackUser_id) {
+    public void setBlackUser_id ( int blackUser_id){
         this.blackUser_id = blackUser_id;
     }
 
-    public int getCurrentPlayerId() {
+    public int getCurrentPlayerId () {
         return currentPlayerId;
     }
 
-    public void setCurrentPlayerId(int currentPlayerId) {
+    public void setCurrentPlayerId ( int currentPlayerId){
         this.currentPlayerId = currentPlayerId;
     }
 
-    public Board getBoard() {
+    public Board getBoard () {
         return board;
     }
 
-    public void setBoard(Board board) {
+    public void setBoard (Board board){
         this.board = board;
     }
 
     @Override
-    public String toString() {
+    public String toString () {
         return "GameEntity{" +
                 "id=" + id +
                 ", whiteUser_id=" + whiteUser_id +
@@ -433,18 +466,23 @@ public class Game {
                 '}';
     }
 
-    public void switchPlayer() {
+    public void switchPlayer () {
         currentPlayerId = (currentPlayerId == whiteUser_id ? blackUser_id : whiteUser_id);
     }
 
-    public boolean checkIfEnd() {
+    public boolean checkIfEnd () {
         return whiteTeamPieces.size() == 0 || blackTeamPieces.size() == 0;
     }
 
-    public int winner() {
+    public int winner () {
         if (whiteTeamPieces.size() == 0) return blackUser_id;
         if (blackTeamPieces.size() == 0) return whiteUser_id;
         return 0;
+    }
+
+    public void setPlayerRole ( int userId, Integer playerColor){
+        if (playerColor.compareTo(1) == 0) this.setBlackUser_id(userId);
+        if (playerColor.compareTo(0) == 0) this.setWhiteUser_id(userId);
     }
 
     private class PlayerError extends RuntimeException {

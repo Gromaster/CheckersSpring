@@ -9,6 +9,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 @ServerEndpoint(
@@ -30,38 +31,51 @@ public class GameEndpoint {
 
     @OnMessage
     public void onMessage(Session session, Message message, @PathParam("userId") Integer user_Id) {
-        Game game;
+        Game game = null;
         int gameId = message.getGameId();
         int userId = message.getUserId();
-        if ((game = readerDB.load(gameId)) == null)
-            game = new Game(gameId, userId);
-        else if (game.getBlackUser_id() == 0 && game.getWhiteUser_id() != userId) {
-            game.setBlackUser_id(userId);
-        } else if (game.getWhiteUser_id() == 0 && game.getBlackUser_id() != userId) {
-            game.setWhiteUser_id(userId);
 
+        if ((game = readerDB.load(gameId)) == null) {
+            game = new Game(gameId);
         }
-        saverDB.save(game);
-        System.out.println("\n" + message.toString());
-        game.readBoardState();
-        System.out.println("\n\n" + game.getBoard().toString());
+        if (message.getMyColor() != null)
+            game.setPlayerRole(message.getUserId(), message.getMyColor());
 
-        if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
+        game.readBoardState();
+
+        System.out.println("\n" + message.toString());
+        System.out.println("\n\n" + Arrays.deepToString(game.boardStateStringToSend(userId)));
+
+        if (user_Id != game.getCurrentPlayerId()) {
+            message.setBoard(game.boardStateStringToSend(userId));
+            send(user_Id, message);
+        }
+        else if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
             try {
-                game.makeMove(message.getMoveString(), userId);
+                message.setBoard(game.executeMessage(message.getMoveString(), userId));
                 if (game.checkIfEnd())
                     message.winner(game.winner());
-                else message.setBoard(game.boardStateStringToSend());
                 message.setCurrentPlayer(game.getCurrentPlayerId() == game.getWhiteUser_id() ? 0 : 1);
                 broadcast(game, message);
-                game.switchPlayer();
             } catch (Exception e) {
-                System.out.println(game.getBoard().toString());
                 e.printStackTrace();
-                //broadcast(game,message.eraseMovement());
+            } finally {
+                saverDB.save(game);
             }
         }
-        saverDB.save(game);
+
+    }
+
+    @OnClose
+    public void onClose(Session session) {
+    }
+
+    private void send(Integer user_id, Message message) {
+        try {
+            gameEndpoints.get(user_id).session.getBasicRemote().sendObject(message);
+        } catch (IOException | EncodeException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -73,9 +87,4 @@ public class GameEndpoint {
             e.printStackTrace();
         }
     }
-
-    @OnClose
-    public void onClose(Session session) {
-    }
-
 }

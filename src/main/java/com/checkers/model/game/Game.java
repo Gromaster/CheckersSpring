@@ -1,6 +1,4 @@
-package com.checkers.model;
-
-import com.sun.istack.NotNull;
+package com.checkers.model.game;
 
 import javax.persistence.*;
 import java.util.ArrayList;

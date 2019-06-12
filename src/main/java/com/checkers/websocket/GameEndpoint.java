@@ -2,9 +2,8 @@ package com.checkers.websocket;
 
 import com.checkers.hibernate.util.ReaderDB;
 import com.checkers.hibernate.util.SaverDB;
-import com.checkers.model.Game;
-import com.checkers.model.Message;
-import org.springframework.context.annotation.Configuration;
+import com.checkers.model.game.Game;
+import com.checkers.model.messages.Message;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;

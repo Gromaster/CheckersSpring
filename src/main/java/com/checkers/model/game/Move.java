@@ -1,4 +1,4 @@
-package com.checkers.model;
+package com.checkers.model.game;
 
 public class Move {
     private Place origin;

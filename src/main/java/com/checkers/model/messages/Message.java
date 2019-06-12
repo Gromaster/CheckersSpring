@@ -1,4 +1,4 @@
-package com.checkers.model;
+package com.checkers.model.messages;
 
 import java.util.Date;
 
@@ -8,9 +8,27 @@ public class Message {
     private int currentPlayer;
     private String moveString;
     private String[][] board;
+    private ChatMessage message;
 
 
     public Message() {
+    }
+
+
+
+    public Message(int gameId, int userId, ChatMessage message) {
+        this.gameId = gameId;
+        this.userId = userId;
+        this.message = message;
+    }
+
+    public Message(int gameId, int userId, int currentPlayer, String moveString, String[][] board, ChatMessage message) {
+        this.gameId = gameId;
+        this.userId = userId;
+        this.currentPlayer = currentPlayer;
+        this.moveString = moveString;
+        this.board = board;
+        this.message = message;
     }
 
     public Message(int gameId, int userId, int currentPlayer, String moveString) {
@@ -47,13 +65,6 @@ public class Message {
         this.userId = Integer.parseInt(s[1]);
         this.moveString = s[2];
     }
-/*
-
-    public Message eraseMovement(){
-        String[] moveString = this.moveString.split("-");
-        return new Message(this.gameId,this.userId,this.movementTime,String.format("%s-%s",moveString[0],moveString[0]));
-    }
-*/
 
     public int getCurrentPlayer() {
         return currentPlayer;
@@ -91,6 +102,22 @@ public class Message {
         moveString = "win-" + winner;
     }
 
+    public String[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(String[][] board) {
+        this.board = board;
+    }
+
+    public ChatMessage getMessage() {
+        return message;
+    }
+
+    public void setMessage(ChatMessage message) {
+        this.message = message;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
@@ -101,11 +128,4 @@ public class Message {
                 '}';
     }
 
-    public String[][] getBoard() {
-        return board;
-    }
-
-    public void setBoard(String[][] board) {
-        this.board = board;
-    }
 }

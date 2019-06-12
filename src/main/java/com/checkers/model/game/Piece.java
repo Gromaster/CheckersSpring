@@ -1,4 +1,4 @@
-package com.checkers.model;
+package com.checkers.model.game;
 
 public abstract class Piece {
     int[][] moveVector = new int[2][2];

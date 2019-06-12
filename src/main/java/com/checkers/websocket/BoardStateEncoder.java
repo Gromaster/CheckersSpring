@@ -1,6 +1,6 @@
 package com.checkers.websocket;
 
-import com.checkers.model.Message;
+import com.checkers.model.messages.Message;
 import com.google.gson.Gson;
 
 import javax.websocket.EncodeException;

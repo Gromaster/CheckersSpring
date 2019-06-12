@@ -1,8 +1,7 @@
-package com.checkers.model;
+package com.checkers.model.game;
 
 
 import com.sun.istack.NotNull;
-import com.sun.istack.Nullable;
 
 public class Place {
     private final char column;

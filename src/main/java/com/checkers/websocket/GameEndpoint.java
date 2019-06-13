@@ -44,10 +44,10 @@ public class GameEndpoint {
         game.readBoardState();
 
         System.out.println("\n" + message.toString());
-        System.out.println("\n\n" + Arrays.deepToString(game.boardStateStringToSend(userId)));
+        System.out.println("\n\n" + Arrays.deepToString(game.boardStateToSend(userId)));
 
         if (user_Id != game.getCurrentPlayerId()) {
-            message.setBoard(game.boardStateStringToSend(userId));
+            message.setBoard(game.boardStateToSend(userId));
             send(user_Id, message);
         }
         else if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {

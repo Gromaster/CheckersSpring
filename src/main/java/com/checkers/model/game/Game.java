@@ -45,8 +45,8 @@ public class Game {
 
 
     public Game(int id) {
-        this.whitePlayerTimeLeft=1000*2*60;
-        this.blackPlayerTimeLeft=1000*2*60;
+        this.whitePlayerTimeLeft = 1000 * 2 * 60;
+        this.blackPlayerTimeLeft = 1000 * 2 * 60;
         this.id = id;
         startGame();
     }
@@ -67,7 +67,7 @@ public class Game {
         initStartingPositions();
     }
 
-    public String[][] executeClick(String moveString,Integer userId){
+    public String[][] executeClick(String moveString, Integer userId) {
         ArrayList<Place> path = new ArrayList<>();
         for (String s : moveString.split("-"))
             path.add(new Place(s));
@@ -84,7 +84,6 @@ public class Game {
         if (piece != null && ((userId == whiteUser_id && blackTeamPieces.contains(piece)) || (userId == blackUser_id && whiteTeamPieces.contains(piece))))
             throw new PlayerError("Trying to move not its own pieces");
         if (isSingleMovePossible(move, piece)) {
-            System.out.println("\n*****\n" + move.toString());
             makeSingleMove(move);
             setBoardState(makeString4BoardState());
             if (move.isJump() && !canJump(board.getPlace(move.getDestination()).getPieceOccupying()))
@@ -97,15 +96,11 @@ public class Game {
 
         int distance = Board.distance(m.getOrigin(), m.getDestination());
         if (canJump(piece)) {
-            System.out.println("***********\n\nCan Jump");
             if (distance == 1) {
-                System.out.println("***********\nDystans = 1 i może skoczyć\n***********");
                 return false;
             }
-            System.out.println("***********\n\nsearching if list of available jumps contains");
             return findListOfAvailableJumps(piece, m.getOrigin()).contains(m);
         } else {
-            System.out.println("***********\n\nsearching if list of available moves contains");
             return findListOfAvailableMoves(piece).contains(m);
         }
     }
@@ -116,7 +111,6 @@ public class Game {
         board.emptyPlace(move.getOrigin());
         if (!placeToEmpty.equals(move.getOrigin())) {
             Piece pieceToRemove = board.getPlace(placeToEmpty).getPieceOccupying();
-            System.out.println("\n****************\nRemoving " + pieceToRemove.toString());
             switch (pieceToRemove.getColor()) {
                 case BLACK:
                     blackTeamPieces.remove(pieceToRemove);
@@ -342,8 +336,6 @@ public class Game {
 
     private void checkStartingBoard() {
         for (Place p : board.getPlaces()) {
-            if (p.getPieceOccupying() != null)
-                System.out.println(p.getPieceOccupying().toString());
             int rowOfPiece = p.getRow();
             if (rowOfPiece <= 3 && p.getPieceOccupying().getClass() != WhitePiece.class) {
                 throw new RuntimeException("Wrong initialization, not White in row<3");
@@ -380,15 +372,39 @@ public class Game {
         String[][] str = new String[8][8];
         Place place;
         Piece piece;
+        ArrayList<Move> moves = new ArrayList<>();
         for (int rowIterator = 0; rowIterator <= 7; rowIterator++) {
             for (char columnIterator = 0; columnIterator <= 7; columnIterator++) {
-                str[rowIterator][columnIterator] = "";
+                if(str[rowIterator][columnIterator]==null)
+                    str[rowIterator][columnIterator] = "";
                 if ((place = board.getPlace(new Place((char) ('A' + columnIterator), rowIterator + 1))) != null) {
                     if ((piece = place.getPieceOccupying()) != null) {
-                        if (placeOfClick == place) str[rowIterator][columnIterator] += "a";
+                        if (placeOfClick == place) {
+                            str[rowIterator][columnIterator] += "a";
+                            if (canJump(piece)) {
+                                moves = findListOfAvailableJumps(piece, place);
+                                for (Move m : moves) {
+                                    str[m.getDestination().getRow() - 1][m.getDestination().getColumn() - 'A'] = "h";
+                                    System.out.println(str[m.getDestination().getRow() - 1][m.getDestination().getColumn() - 'A']+" str "+(m.getDestination().getRow() - 1)+(m.getDestination().getColumn() - 'A'));
+                                    System.out.println(m);
+                                }
+                            } else if (canMove(piece)) {
+                                moves = findListOfAvailableMoves(piece);
+                                for (Move m : moves) {
+                                    str[m.getDestination().getRow() - 1][m.getDestination().getColumn() - 'A'] = "h";
+                                    System.out.println(str[m.getDestination().getRow() - 1][m.getDestination().getColumn() - 'A']+" str "+(m.getDestination().getRow() - 1)+(m.getDestination().getColumn() - 'A'));
+
+                                    System.out.println(m);
+                                }
+                            }
+                        }
                         str[rowIterator][columnIterator] += piece.stringToSend();
-                    } else str[rowIterator][columnIterator] = "-";
-                } else str[rowIterator][columnIterator] = "-";
+                    } else if (str[rowIterator][columnIterator].equals("")) {
+                        str[rowIterator][columnIterator] = "-";
+                    }
+                } else if (str[rowIterator][columnIterator].equals("")) {
+                    str[rowIterator][columnIterator] = "-";
+                }
             }
         }
         return str;
@@ -408,7 +424,8 @@ public class Game {
         }
         for (int rowIterator = 0; rowIterator <= 7; rowIterator++) {
             for (char columnIterator = 0; columnIterator <= 7; columnIterator++) {
-                str[rowIterator][columnIterator] = "";
+                if(str[rowIterator][columnIterator]==null)
+                    str[rowIterator][columnIterator] = "";
                 if ((place = board.getPlace(new Place((char) (columnIterator + 'A'), rowIterator + 1))) != null) {
                     if ((piece = place.getPieceOccupying()) != null) {
                         if (currPlayer && piece.getColor().equals(color)) {
@@ -419,8 +436,7 @@ public class Game {
                                     for (Move m : jumps) {
                                         int column = m.getDestination().getColumn() - 'A';
                                         int row = m.getDestination().getRow() - 1;
-                                        if (str[column][row].equals(""))
-                                            str[column][row] += "h";
+                                        str[column][row] = "h";
                                     }
                                 }
                             } else {
@@ -430,10 +446,7 @@ public class Game {
                                     for (Move m : moves) {
                                         int column = m.getDestination().getColumn() - 'A';
                                         int row = m.getDestination().getRow() - 1;
-
-                                        if(str[column][row]!=null)
-                                            if (str[column][row].equals(""))
-                                                str[column][row] += "h";
+                                        str[column][row] = "h";
                                     }
                                 }
                             }
@@ -473,10 +486,10 @@ public class Game {
         if (playerColor.compareTo(0) == 0) this.setWhiteUser_id(userId);
     }
 
-    public void setTime(int controlTime,int controlTimeBonus){
-        setWhitePlayerTimeLeft(controlTime*1000);
-        setBlackPlayerTimeLeft(controlTime*1000);
-        setControlTimeBonus(controlTimeBonus*1000);
+    public void setTime(int controlTime, int controlTimeBonus) {
+        setWhitePlayerTimeLeft(controlTime * 1000);
+        setBlackPlayerTimeLeft(controlTime * 1000);
+        setControlTimeBonus(controlTimeBonus * 1000);
     }
 
     public String getBoardState() {
@@ -575,8 +588,8 @@ public class Game {
     }
 
     public void timeIsUpForCurrentPlayer() {
-        if(currentPlayerId==blackUser_id)setBlackPlayerTimeLeft(0);
-        if(currentPlayerId==whiteUser_id)setWhitePlayerTimeLeft(0);
+        if (currentPlayerId == blackUser_id) setBlackPlayerTimeLeft(0);
+        if (currentPlayerId == whiteUser_id) setWhitePlayerTimeLeft(0);
     }
 
 

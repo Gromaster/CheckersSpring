@@ -24,7 +24,7 @@ public class GameEndpoint {
     private SaverDB saverDB = new SaverDB();
     private Session session;
     private static HashMap<Integer, GameEndpoint> gameEndpoints = new HashMap<>();
-    private Timer timer;
+    private Timer timer=new Timer();
 
     @OnOpen
     public synchronized void onOpen(Session session, @PathParam("userId") Integer userId) {
@@ -46,6 +46,7 @@ public class GameEndpoint {
             game.setPlayerRole(message.getUserId(), message.getMyColor());
             game.setTime(message.getTimeControl(),message.getTimeControlBonus());
         }
+        saverDB.save(game);
         game.readBoardState();
 
         System.out.println("\n" + message.toString());
@@ -98,6 +99,7 @@ public class GameEndpoint {
 
     private void send(Integer user_id, Message message) {
         try {
+            System.out.println(message.toString());
             gameEndpoints.get(user_id).session.getBasicRemote().sendObject(message);
         } catch (IOException | EncodeException e) {
             e.printStackTrace();
@@ -106,10 +108,14 @@ public class GameEndpoint {
 
     private void broadcastMove(Game game, Message message) {
         try {
+            timer.cancel();
+            timer = new Timer();
             timer.schedule(new TimePassed(game), game.currentPlayerTimeLeft());
             message.setBoard(game.boardStateToSend(game.getBlackUser_id()));
+            System.out.println(message.toString());
             gameEndpoints.get(game.getBlackUser_id()).session.getBasicRemote().sendObject(message);
             message.setBoard(game.boardStateToSend(game.getWhiteUser_id()));
+            System.out.println(message.toString());
             gameEndpoints.get(game.getWhiteUser_id()).session.getBasicRemote().sendObject(message);
         } catch (IOException | EncodeException e) {
             e.printStackTrace();

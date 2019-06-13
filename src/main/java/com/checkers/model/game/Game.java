@@ -37,6 +37,9 @@ public class Game {
     private ArrayList<BlackPiece> blackTeamPieces = new ArrayList<>();
     @Transient
     private ArrayList<WhitePiece> whiteTeamPieces = new ArrayList<>();
+    @Transient
+    private Long timeStampStart;
+
 
     public Game(int id) {
         this.id = id;
@@ -48,7 +51,7 @@ public class Game {
         this.id = id;
         this.whiteUser_id = whiteUser_id;
         this.blackUser_id = blackUser_id;
-        this.currentPlayerId = whiteUser_id;
+        this.setCurrentPlayerId(whiteUser_id);
         startGame();
     }
 
@@ -439,7 +442,9 @@ public class Game {
     }
 
     public void switchPlayer() {
-        currentPlayerId = (currentPlayerId == whiteUser_id ? blackUser_id : whiteUser_id);
+
+        this.setCurrentPlayerId(currentPlayerId == whiteUser_id ? blackUser_id : whiteUser_id);
+
     }
 
     public boolean checkIfEnd() {
@@ -447,8 +452,8 @@ public class Game {
     }
 
     public int winner() {
-        if (whiteTeamPieces.size() == 0) return blackUser_id;
-        if (blackTeamPieces.size() == 0) return whiteUser_id;
+        if (whiteTeamPieces.size() == 0 || whitePlayerTimeLeft == 0) return blackUser_id;
+        if (blackTeamPieces.size() == 0 || blackPlayerTimeLeft == 0) return whiteUser_id;
         return 0;
     }
 
@@ -478,8 +483,8 @@ public class Game {
     }
 
     public void setWhiteUser_id(int whiteUser_id) {
-        this.currentPlayerId = whiteUser_id;
         this.whiteUser_id = whiteUser_id;
+        this.setCurrentPlayerId(whiteUser_id);
     }
 
     public int getBlackUser_id() {
@@ -494,8 +499,17 @@ public class Game {
         return currentPlayerId;
     }
 
-    public void setCurrentPlayerId(int currentPlayerId) {
+    private void setCurrentPlayerId(int currentPlayerId) {
+        if (timeStampStart != null) {
+            countDownTimeOfCurrentPlayer(System.currentTimeMillis() - timeStampStart);
+        }
         this.currentPlayerId = currentPlayerId;
+        timeStampStart = System.currentTimeMillis();
+    }
+
+    private void countDownTimeOfCurrentPlayer(long subTime) {
+        if (currentPlayerId == blackUser_id) blackPlayerTimeLeft -= subTime;
+        if (currentPlayerId == whiteUser_id) whitePlayerTimeLeft -= subTime;
     }
 
     public Board getBoard() {
@@ -506,6 +520,22 @@ public class Game {
         this.board = board;
     }
 
+    public int getWhitePlayerTimeLeft() {
+        return whitePlayerTimeLeft;
+    }
+
+    public void setWhitePlayerTimeLeft(int whitePlayerTimeLeft) {
+        this.whitePlayerTimeLeft = whitePlayerTimeLeft;
+    }
+
+    public int getBlackPlayerTimeLeft() {
+        return blackPlayerTimeLeft;
+    }
+
+    public void setBlackPlayerTimeLeft(int blackPlayerTimeLeft) {
+        this.blackPlayerTimeLeft = blackPlayerTimeLeft;
+    }
+
     @Override
     public String toString() {
         return "GameEntity{" +
@@ -513,6 +543,15 @@ public class Game {
                 ", whiteUser_id=" + whiteUser_id +
                 ", blackUser_id=" + blackUser_id +
                 '}';
+    }
+
+    public long currentPlayerTimeLeft() {
+        return currentPlayerId == whiteUser_id ? whitePlayerTimeLeft : blackPlayerTimeLeft;
+    }
+
+    public void timeIsUpForCurrentPlayer() {
+        if(currentPlayerId==blackUser_id)setBlackPlayerTimeLeft(0);
+        if(currentPlayerId==whiteUser_id)setWhitePlayerTimeLeft(0);
     }
 
 

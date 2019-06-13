@@ -3,7 +3,6 @@ package com.checkers.model.messages;
 import java.util.Date;
 
 public class Message {
-    //TODO pole "type" które ma byc albo piece-click, albo move
     private int gameId;
     private int userId;
     private int currentPlayer;
@@ -70,6 +69,11 @@ public class Message {
         this.gameId = Integer.parseInt(s[0]);
         this.userId = Integer.parseInt(s[1]);
         this.moveString = s[2];
+    }
+
+    public Message(int gameId, String moveString) {
+        this.gameId = gameId;
+        this.moveString = moveString;
     }
 
     public int getCurrentPlayer() {

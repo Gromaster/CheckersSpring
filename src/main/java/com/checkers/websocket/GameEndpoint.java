@@ -11,6 +11,8 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @ServerEndpoint(
         value = "/game/{userId}",
@@ -21,6 +23,7 @@ public class GameEndpoint {
     private SaverDB saverDB = new SaverDB();
     private Session session;
     private static HashMap<Integer, GameEndpoint> gameEndpoints = new HashMap<>();
+    private Timer timer;
 
     @OnOpen
     public synchronized void onOpen(Session session, @PathParam("userId") Integer userId) {
@@ -45,7 +48,6 @@ public class GameEndpoint {
 
         System.out.println("\n" + message.toString());
         System.out.println("\n\n" + Arrays.deepToString(game.boardStateToSend(userId)));
-
         if (user_Id != game.getCurrentPlayerId()) {
             message.setBoard(game.boardStateToSend(userId));
             send(user_Id, message);
@@ -78,13 +80,41 @@ public class GameEndpoint {
         }
     }
 
-
     private void broadcast(Game game, Message message) {
+        try {
+            timer.schedule(new TimePassed(game), game.currentPlayerTimeLeft());
+            message.setBoard(game.boardStateToSend(game.getBlackUser_id()));
+            gameEndpoints.get(game.getBlackUser_id()).session.getBasicRemote().sendObject(message);
+            message.setBoard(game.boardStateToSend(game.getWhiteUser_id()));
+            gameEndpoints.get(game.getWhiteUser_id()).session.getBasicRemote().sendObject(message);
+        } catch (IOException | EncodeException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void broadcastWinner(Game game) {
+        Message message = new Message(game.getId(), "winner-" + game.winner());
         try {
             gameEndpoints.get(game.getBlackUser_id()).session.getBasicRemote().sendObject(message);
             gameEndpoints.get(game.getWhiteUser_id()).session.getBasicRemote().sendObject(message);
         } catch (IOException | EncodeException e) {
             e.printStackTrace();
         }
+
     }
+
+    class TimePassed extends TimerTask {
+        private Game game;
+
+        TimePassed(Game game) {
+            this.game = game;
+        }
+
+        @Override
+        public void run() {
+            game.timeIsUpForCurrentPlayer();
+            broadcastWinner(game);
+        }
+    }
+
 }

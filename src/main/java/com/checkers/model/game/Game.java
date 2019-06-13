@@ -2,7 +2,6 @@ package com.checkers.model.game;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 
@@ -27,11 +26,10 @@ public class Game {
     private int currentPlayerId;
 
     @Column(name = "whitePlayerTimeLeft")
-    private Long whitePlayerTimeLeft;
+    private int whitePlayerTimeLeft;
 
     @Column(name = "blackPlayerTimeLeft")
-    private Long blackPlayerTimeLeft;
-
+    private int blackPlayerTimeLeft;
 
     @Transient
     private Board board = new Board();
@@ -42,12 +40,6 @@ public class Game {
 
     public Game(int id) {
         this.id = id;
-        /*
-        Random r = new Random();
-        if (r.nextBoolean())
-            setWhiteUser_id(userId);
-        else
-            setBlackUser_id(userId);*/
         startGame();
     }
 
@@ -89,40 +81,6 @@ public class Game {
         return boardStateToSend(userId);
     }
 
-
-    /*
-    public void makeMove(String moveString, Integer userId) {
-        ArrayList<Place> path = new ArrayList<>();
-        for (String s : moveString.split("-"))
-            path.add(new Place(s));
-
-        ArrayList<Move> move = new ArrayList<>();
-        for (int i = 0; i < (path.size() - 1); i++) {
-            move.add(new Move(path.get(i), path.get(i + 1)));
-        }
-        Piece piece = board.getPlace(move.get(0).getOrigin()).getPieceOccupying();
-        if (piece != null && ((userId == whiteUser_id && blackTeamPieces.contains(piece)) || (userId == blackUser_id && whiteTeamPieces.contains(piece))))
-            throw new PlayerError("Trying to move not its own pieces");
-        if (isMovePossible(move)) {
-            System.out.println("\n*****\n" + move.toString());
-            makeMove(move);
-        } else throw new PlayerError("Unexpected move");
-        setBoardState(makeString4BoardState());
-    }
-
-    private boolean isMovePossible(ArrayList<Move> moveList) {
-        Piece piece = board.getPlace(moveList.get(0).getOrigin()).getPieceOccupying();
-        if (piece == null) {
-            System.out.println("***********\n\nPiece is null");
-            return false;
-        }
-        if (!moveList.get(0).isJump() && canTeamJump(piece)) return false;
-        for (Move m : moveList) {
-            if (!isSingleMovePossible(m, piece)) return false;
-        }
-        return true;
-    }*/
-
     private boolean isSingleMovePossible(Move m, Piece piece) {
 
         int distance = Board.distance(m.getOrigin(), m.getDestination());
@@ -139,12 +97,6 @@ public class Game {
             return findListOfAvailableMoves(piece).contains(m);
         }
     }
-/*
-    private void makeMove(ArrayList<Move> moveList) {
-        for (Move m : moveList) {
-            makeSingleMove(m);
-        }
-    }*/
 
     private void makeSingleMove(Move move) {
         Piece piece = board.getPlace(move.getOrigin()).getPieceOccupying();
@@ -486,6 +438,25 @@ public class Game {
         return str;
     }
 
+    public void switchPlayer() {
+        currentPlayerId = (currentPlayerId == whiteUser_id ? blackUser_id : whiteUser_id);
+    }
+
+    public boolean checkIfEnd() {
+        return whiteTeamPieces.size() == 0 || blackTeamPieces.size() == 0;
+    }
+
+    public int winner() {
+        if (whiteTeamPieces.size() == 0) return blackUser_id;
+        if (blackTeamPieces.size() == 0) return whiteUser_id;
+        return 0;
+    }
+
+    public void setPlayerRole(int userId, Integer playerColor) {
+        if (playerColor.compareTo(1) == 0) this.setBlackUser_id(userId);
+        if (playerColor.compareTo(0) == 0) this.setWhiteUser_id(userId);
+    }
+
     public String getBoardState() {
         return boardState;
     }
@@ -544,24 +515,6 @@ public class Game {
                 '}';
     }
 
-    public void switchPlayer() {
-        currentPlayerId = (currentPlayerId == whiteUser_id ? blackUser_id : whiteUser_id);
-    }
-
-    public boolean checkIfEnd() {
-        return whiteTeamPieces.size() == 0 || blackTeamPieces.size() == 0;
-    }
-
-    public int winner() {
-        if (whiteTeamPieces.size() == 0) return blackUser_id;
-        if (blackTeamPieces.size() == 0) return whiteUser_id;
-        return 0;
-    }
-
-    public void setPlayerRole(int userId, Integer playerColor) {
-        if (playerColor.compareTo(1) == 0) this.setBlackUser_id(userId);
-        if (playerColor.compareTo(0) == 0) this.setWhiteUser_id(userId);
-    }
 
     private class PlayerError extends RuntimeException {
         PlayerError(String message) {

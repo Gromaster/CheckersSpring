@@ -23,7 +23,7 @@ public class GameEndpoint {
     private static HashMap<Integer, GameEndpoint> gameEndpoints = new HashMap<>();
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("userId") Integer userId) {
+    public synchronized void onOpen(Session session, @PathParam("userId") Integer userId) {
         this.session = session;
         gameEndpoints.put(userId, this);
 

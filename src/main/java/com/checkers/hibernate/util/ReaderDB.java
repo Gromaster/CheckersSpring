@@ -13,7 +13,7 @@ public class ReaderDB {
         sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
-    public Game load(int gameId) {
+    public synchronized Game load(int gameId) {
         Session session = sessionFactory.openSession();
         return session.get(Game.class, gameId);
     }

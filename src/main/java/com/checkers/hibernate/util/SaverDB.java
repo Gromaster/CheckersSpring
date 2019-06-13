@@ -14,7 +14,7 @@ public class SaverDB {
         sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
-    public void save(Game game) {
+    public synchronized void save(Game game) {
         session = sessionFactory.openSession();
         session.beginTransaction();
         session.saveOrUpdate(game);

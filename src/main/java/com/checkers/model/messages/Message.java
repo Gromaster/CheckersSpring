@@ -3,9 +3,9 @@ package com.checkers.model.messages;
 import java.util.Date;
 
 public class Message {
-    private int gameId;
-    private int userId;
-    private int currentPlayer;
+    private Integer gameId;
+    private Integer userId;
+    private Integer currentPlayer;
     private Integer myColor;        //value 0 - white | value 1 - black
     private String moveString;
     private String[][] board;

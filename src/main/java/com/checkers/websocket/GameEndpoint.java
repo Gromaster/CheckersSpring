@@ -45,9 +45,12 @@ public class GameEndpoint {
             game.setPlayerRole(message.getUserId(), message.getMyColor());
 
         game.readBoardState();
+        if (message.getMessage()!=null)
+            broadcastChat(game,message);
 
         System.out.println("\n" + message.toString());
         System.out.println("\n\n" + Arrays.deepToString(game.boardStateToSend(userId)));
+
         if (user_Id != game.getCurrentPlayerId()) {
             message.setBoard(game.boardStateToSend(userId));
             send(user_Id, message);
@@ -66,6 +69,15 @@ public class GameEndpoint {
             }
         }
 
+    }
+
+    private void broadcastChat(Game game, Message message) {
+        try {
+            gameEndpoints.get(game.getWhiteUser_id()).session.getBasicRemote().sendObject(message);
+            gameEndpoints.get(game.getBlackUser_id()).session.getBasicRemote().sendObject(message);
+        } catch (IOException | EncodeException e) {
+            e.printStackTrace();
+        }
     }
 
     @OnClose

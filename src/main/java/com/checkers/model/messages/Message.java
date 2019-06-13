@@ -1,15 +1,13 @@
 package com.checkers.model.messages;
 
-import java.util.Date;
-
 public class Message {
     private Integer gameId;
     private Integer userId;
     private Integer currentPlayer;
     private Integer myColor;        //value 0 - white | value 1 - black
-    private String moveString;
+    private String message;
+    private String type;
     private String[][] board;
-    private ChatMessage message;
 
 
     public Message() {
@@ -21,33 +19,18 @@ public class Message {
         this.myColor = myColor;
     }
 
-    public Message(int gameId, int userId, ChatMessage message) {
+    public Message(int gameId, int userId, int currentPlayer, String message) {
         this.gameId = gameId;
         this.userId = userId;
+        this.currentPlayer = currentPlayer;
         this.message = message;
     }
 
-    public Message(int gameId, int userId, int currentPlayer, String moveString, String[][] board, ChatMessage message) {
+    public Message(int gameId, int userId, int currentPlayer, String message, String[][] board) {
         this.gameId = gameId;
         this.userId = userId;
         this.currentPlayer = currentPlayer;
-        this.moveString = moveString;
-        this.board = board;
         this.message = message;
-    }
-
-    public Message(int gameId, int userId, int currentPlayer, String moveString) {
-        this.gameId = gameId;
-        this.userId = userId;
-        this.currentPlayer = currentPlayer;
-        this.moveString = moveString;
-    }
-
-    public Message(int gameId, int userId, int currentPlayer, String moveString, String[][] board) {
-        this.gameId = gameId;
-        this.userId = userId;
-        this.currentPlayer = currentPlayer;
-        this.moveString = moveString;
         this.board = board;
     }
 
@@ -58,22 +41,22 @@ public class Message {
         this.board = board;
     }
 
-    public Message(int gameId, int userId, String moveString) {
+    public Message(int gameId, int userId, String message) {
         this.gameId = gameId;
         this.userId = userId;
-        this.moveString = moveString;
+        this.message = message;
     }
 
     public Message(String stringToParse) {
         String[] s = stringToParse.split("/");
         this.gameId = Integer.parseInt(s[0]);
         this.userId = Integer.parseInt(s[1]);
-        this.moveString = s[2];
+        this.message = s[2];
     }
 
-    public Message(int gameId, String moveString) {
+    public Message(int gameId, String message) {
         this.gameId = gameId;
-        this.moveString = moveString;
+        this.message = message;
     }
 
     public int getCurrentPlayer() {
@@ -92,12 +75,12 @@ public class Message {
         this.userId = userId;
     }
 
-    public String getMoveString() {
-        return moveString;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMoveString(String moveString) {
-        this.moveString = moveString;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public int getGameId() {
@@ -109,7 +92,7 @@ public class Message {
     }
 
     public void winner(int winner) {
-        moveString = "win-" + winner;
+        message = "win-" + winner;
     }
 
     public String[][] getBoard() {
@@ -120,14 +103,6 @@ public class Message {
         this.board = board;
     }
 
-    public ChatMessage getMessage() {
-        return message;
-    }
-
-    public void setMessage(ChatMessage message) {
-        this.message = message;
-    }
-
     public Integer getMyColor() {
         return myColor;
     }
@@ -136,13 +111,33 @@ public class Message {
         this.myColor = myColor;
     }
 
+    public void setGameId(Integer gameId) {
+        this.gameId = gameId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public void setCurrentPlayer(Integer currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
                 "gameId=" + gameId +
                 ", userId=" + userId +
                 //", movementTime=" + movementTime +
-                ", moveString='" + moveString + '\'' +
+                ", message='" + message + '\'' +
                 '}';
     }
 

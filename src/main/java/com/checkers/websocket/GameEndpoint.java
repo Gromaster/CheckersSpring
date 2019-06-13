@@ -45,30 +45,31 @@ public class GameEndpoint {
             game.setPlayerRole(message.getUserId(), message.getMyColor());
 
         game.readBoardState();
-        if (message.getMessage()!=null)
-            broadcastChat(game,message);
 
         System.out.println("\n" + message.toString());
         System.out.println("\n\n" + Arrays.deepToString(game.boardStateToSend(userId)));
-
-        if (user_Id != game.getCurrentPlayerId()) {
-            message.setBoard(game.boardStateToSend(userId));
-            send(user_Id, message);
+        switch (message.getType()){
+            case "chat-message":
+                broadcastChat(game,message);
+                break;
+            case "piece-click":
+                if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0){
+                    message.setBoard(game.executeClick(message.getMessage(), userId));
+                    send(user_Id, message);
+                }
+                break;
+            case "move":
+                if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0){
+                    message.setBoard(game.executeMove(message.getMessage(), userId));
+                    message.setCurrentPlayer(game.getCurrentPlayerId() == game.getWhiteUser_id() ? 0 : 1);
+                    broadcastMove(game, message);
+                }
+                break;
         }
-        else if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
-            try {
-                message.setBoard(game.executeMessage(message.getMoveString(), userId));
-                if (game.checkIfEnd())
-                    message.winner(game.winner());
-                message.setCurrentPlayer(game.getCurrentPlayerId() == game.getWhiteUser_id() ? 0 : 1);
-                broadcast(game, message);
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                saverDB.save(game);
-            }
-        }
+        if (game.checkIfEnd())
+            message.winner(game.winner());
 
+        saverDB.save(game);
     }
 
     private void broadcastChat(Game game, Message message) {
@@ -92,7 +93,7 @@ public class GameEndpoint {
         }
     }
 
-    private void broadcast(Game game, Message message) {
+    private void broadcastMove(Game game, Message message) {
         try {
             timer.schedule(new TimePassed(game), game.currentPlayerTimeLeft());
             message.setBoard(game.boardStateToSend(game.getBlackUser_id()));

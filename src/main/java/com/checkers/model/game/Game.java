@@ -62,25 +62,29 @@ public class Game {
         initStartingPositions();
     }
 
-    public String[][] executeMessage(String moveString, Integer userId) {
+    public String[][] executeClick(String moveString,Integer userId){
         ArrayList<Place> path = new ArrayList<>();
         for (String s : moveString.split("-"))
             path.add(new Place(s));
         Piece piece = board.getPlace(path.get(0)).getPieceOccupying();
-        if (path.size() == 1) {//zwraca tablice mozliwych ruchow z ar/ab
-            return boardStateToSend(piece.getPlace());
-        } else {
-            Move move = new Move(path.get(0), path.get(1));
-            if (piece != null && ((userId == whiteUser_id && blackTeamPieces.contains(piece)) || (userId == blackUser_id && whiteTeamPieces.contains(piece))))
-                throw new PlayerError("Trying to move not its own pieces");
-            if (isSingleMovePossible(move, piece)) {
-                System.out.println("\n*****\n" + move.toString());
-                makeSingleMove(move);
-                setBoardState(makeString4BoardState());
-                if (move.isJump() && !canJump(board.getPlace(move.getDestination()).getPieceOccupying()))
-                    switchPlayer();
-            } else throw new PlayerError("Unexpected move");
-        }
+        return boardStateToSend(piece.getPlace());
+    }
+
+    public String[][] executeMove(String moveString, Integer userId) {
+        ArrayList<Place> path = new ArrayList<>();
+        for (String s : moveString.split("-"))
+            path.add(new Place(s));
+        Piece piece = board.getPlace(path.get(0)).getPieceOccupying();
+        Move move = new Move(path.get(0), path.get(1));
+        if (piece != null && ((userId == whiteUser_id && blackTeamPieces.contains(piece)) || (userId == blackUser_id && whiteTeamPieces.contains(piece))))
+            throw new PlayerError("Trying to move not its own pieces");
+        if (isSingleMovePossible(move, piece)) {
+            System.out.println("\n*****\n" + move.toString());
+            makeSingleMove(move);
+            setBoardState(makeString4BoardState());
+            if (move.isJump() && !canJump(board.getPlace(move.getDestination()).getPieceOccupying()))
+                switchPlayer();
+        } else throw new PlayerError("Unexpected move");
         return boardStateToSend(userId);
     }
 

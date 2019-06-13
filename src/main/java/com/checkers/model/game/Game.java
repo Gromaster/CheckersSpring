@@ -31,6 +31,9 @@ public class Game {
     @Column(name = "blackPlayerTimeLeft")
     private int blackPlayerTimeLeft;
 
+    @Column(name = "controlTimeBonus")
+    private int controlTimeBonus;
+
     @Transient
     private Board board = new Board();
     @Transient
@@ -42,6 +45,8 @@ public class Game {
 
 
     public Game(int id) {
+        this.whitePlayerTimeLeft=1000*2*60;
+        this.blackPlayerTimeLeft=1000*2*60;
         this.id = id;
         startGame();
     }
@@ -468,6 +473,12 @@ public class Game {
         if (playerColor.compareTo(0) == 0) this.setWhiteUser_id(userId);
     }
 
+    public void setTime(int controlTime,int controlTimeBonus){
+        setWhitePlayerTimeLeft(controlTime*1000);
+        setBlackPlayerTimeLeft(controlTime*1000);
+        setControlTimeBonus(controlTimeBonus*1000);
+    }
+
     public String getBoardState() {
         return boardState;
     }
@@ -516,6 +527,14 @@ public class Game {
     private void countDownTimeOfCurrentPlayer(long subTime) {
         if (currentPlayerId == blackUser_id) blackPlayerTimeLeft -= subTime;
         if (currentPlayerId == whiteUser_id) whitePlayerTimeLeft -= subTime;
+    }
+
+    public int getControlTimeBonus() {
+        return controlTimeBonus;
+    }
+
+    public void setControlTimeBonus(int controlTimeBonus) {
+        this.controlTimeBonus = controlTimeBonus;
     }
 
     public Board getBoard() {

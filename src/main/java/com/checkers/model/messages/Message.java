@@ -7,6 +7,9 @@ public class Message {
     private int userId;
     private int currentPlayer;
     private int myColor;        //value 0 - white | value 1 - black
+    private int timeControl;
+    private int timeControlBonus;
+    private int winnerId;
     private String message;
     private String type;
     private String[][] board;
@@ -15,50 +18,36 @@ public class Message {
     public Message() {
     }
 
-    public Message(int gameId, int userId, int myColor) {
-        this.gameId = gameId;
-        this.userId = userId;
+    public Message(int winnerId) {
+        this.winnerId=winnerId;
+    }
+
+    public int getWinnerId() {
+        return winnerId;
+    }
+
+    public void setWinnerId(int winnerId) {
+        this.winnerId = winnerId;
+    }
+
+    public void setMyColor(int myColor) {
         this.myColor = myColor;
     }
 
-    public Message(int gameId, int userId, int currentPlayer, String message) {
-        this.gameId = gameId;
-        this.userId = userId;
-        this.currentPlayer = currentPlayer;
-        this.message = message;
+    public int getTimeControl() {
+        return timeControl;
     }
 
-    public Message(int gameId, int userId, int currentPlayer, String message, String[][] board) {
-        this.gameId = gameId;
-        this.userId = userId;
-        this.currentPlayer = currentPlayer;
-        this.message = message;
-        this.board = board;
+    public void setTimeControl(int timeControl) {
+        this.timeControl = timeControl;
     }
 
-    public Message(int gameId, int userId, int currentPlayer, String[][] board) {
-        this.gameId = gameId;
-        this.userId = userId;
-        this.currentPlayer = currentPlayer;
-        this.board = board;
+    public int getTimeControlBonus() {
+        return timeControlBonus;
     }
 
-    public Message(int gameId, int userId, String message) {
-        this.gameId = gameId;
-        this.userId = userId;
-        this.message = message;
-    }
-
-    public Message(String stringToParse) {
-        String[] s = stringToParse.split("/");
-        this.gameId = Integer.parseInt(s[0]);
-        this.userId = Integer.parseInt(s[1]);
-        this.message = s[2];
-    }
-
-    public Message(int gameId, String message) {
-        this.gameId = gameId;
-        this.message = message;
+    public void setTimeControlBonus(int timeControlBonus) {
+        this.timeControlBonus = timeControlBonus;
     }
 
     public int getCurrentPlayer() {

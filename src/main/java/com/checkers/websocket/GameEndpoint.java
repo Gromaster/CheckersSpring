@@ -3,6 +3,7 @@ package com.checkers.websocket;
 import com.checkers.hibernate.util.ReaderDB;
 import com.checkers.hibernate.util.SaverDB;
 import com.checkers.model.game.Game;
+import com.checkers.model.messages.ChatMessage;
 import com.checkers.model.messages.Message;
 
 import javax.websocket.*;
@@ -41,31 +42,33 @@ public class GameEndpoint {
         if ((game = readerDB.load(gameId)) == null) {
             game = new Game(gameId);
         }
-        if (message.getMyColor() != null)
+        if (message.getMyColor() != null) {
             game.setPlayerRole(message.getUserId(), message.getMyColor());
-
+            game.setTime(message.getTimeControl(),message.getTimeControlBonus());
+        }
         game.readBoardState();
 
         System.out.println("\n" + message.toString());
-        System.out.println("\n\n" + Arrays.deepToString(game.boardStateToSend(userId))+"\n\n");
-        switch (message.getType()){
-            case "chat-message":
-                broadcastChat(game,message);
-                break;
-            case "piece-click":
-                if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0){
-                    message.setBoard(game.executeClick(message.getMessage(), userId));
-                    send(user_Id, message);
-                }
-                break;
-            case "move":
-                if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0){
-                    message.setBoard(game.executeMove(message.getMessage(), userId));
-                    message.setCurrentPlayer(game.getCurrentPlayerId() == game.getWhiteUser_id() ? 0 : 1);
-                    broadcastMove(game, message);
-                }
-                break;
-        }
+        System.out.println("\n\n" + Arrays.deepToString(game.boardStateToSend(userId)) + "\n\n");
+        if (message.getType() != null)
+            switch (message.getType()) {
+                case "chat-message":
+                    broadcastChat(game, message);
+                    break;
+                case "piece-click":
+                    if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
+                        message.setBoard(game.executeClick(message.getMessage(), userId));
+                        send(user_Id, message);
+                    }
+                    break;
+                case "move":
+                    if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
+                        message.setBoard(game.executeMove(message.getMessage(), userId));
+                        message.setCurrentPlayer(game.getCurrentPlayerId() == game.getWhiteUser_id() ? 0 : 1);
+                        broadcastMove(game, message);
+                    }
+                    break;
+            }
         if (game.checkIfEnd())
             message.winner(game.winner());
 
@@ -74,16 +77,23 @@ public class GameEndpoint {
 
     private void broadcastChat(Game game, Message message) {
         try {
-            System.out.println(message.toString());
-            gameEndpoints.get(game.getWhiteUser_id()).session.getBasicRemote().sendObject(message);
-            gameEndpoints.get(game.getBlackUser_id()).session.getBasicRemote().sendObject(message);
+            ChatMessage chatMessage=new ChatMessage(message);
+            System.out.println(chatMessage.toString());
+            gameEndpoints.get(game.getWhiteUser_id()).session.getBasicRemote().sendObject(chatMessage);
+            gameEndpoints.get(game.getBlackUser_id()).session.getBasicRemote().sendObject(chatMessage);
         } catch (IOException | EncodeException e) {
             e.printStackTrace();
         }
     }
 
     @OnClose
-    public void onClose(Session session) {
+    public void onClose(Session session, @PathParam("userId") Integer user_Id) {
+        gameEndpoints.remove(user_Id);
+        try {
+            this.session.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void send(Integer user_id, Message message) {
@@ -107,7 +117,7 @@ public class GameEndpoint {
     }
 
     private void broadcastWinner(Game game) {
-        Message message = new Message(game.getId(), "winner-" + game.winner());
+        Message message = new Message(game.winner());
         try {
             gameEndpoints.get(game.getBlackUser_id()).session.getBasicRemote().sendObject(message);
             gameEndpoints.get(game.getWhiteUser_id()).session.getBasicRemote().sendObject(message);

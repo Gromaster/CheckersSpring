@@ -12,6 +12,15 @@ public class ChatMessage {
         this.message = message;
     }
 
+    public ChatMessage(Message message) {
+        this.username=parse(message.getMessage())[0];
+        this.message=parse(message.getMessage())[1];
+    }
+
+    private String[] parse(String message) {
+        return message.replace("{\"username\":\"", "").replace("\",\"message\":","").replace("\"}", "").split("\"");
+    }
+
     @Override
     public String toString() {
         return "ChatMessage{" +

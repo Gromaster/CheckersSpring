@@ -1,10 +1,12 @@
 package com.checkers.model.messages;
 
+import java.util.Arrays;
+
 public class Message {
-    private Integer gameId;
-    private Integer userId;
-    private Integer currentPlayer;
-    private Integer myColor;        //value 0 - white | value 1 - black
+    private int gameId;
+    private int userId;
+    private int currentPlayer;
+    private int myColor;        //value 0 - white | value 1 - black
     private String message;
     private String type;
     private String[][] board;
@@ -133,12 +135,18 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{" +
+        StringBuilder string=new StringBuilder("Message{" +
                 "gameId=" + gameId +
                 ", userId=" + userId +
-                //", movementTime=" + movementTime +
+                ", currentPlayer=" + currentPlayer +
+                ", myColor=" + myColor +
                 ", message='" + message + '\'' +
-                '}';
+                ", type='" + type + '\'' +
+                ", board=\n");
+        if(board!=null)
+            for(String[] s:board)
+                string.append(Arrays.toString(s)).append("\n");
+        string.append('}');
+        return string.toString();
     }
-
 }

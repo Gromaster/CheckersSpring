@@ -47,7 +47,7 @@ public class GameEndpoint {
         game.readBoardState();
 
         System.out.println("\n" + message.toString());
-        System.out.println("\n\n" + Arrays.deepToString(game.boardStateToSend(userId)));
+        System.out.println("\n\n" + Arrays.deepToString(game.boardStateToSend(userId))+"\n\n");
         switch (message.getType()){
             case "chat-message":
                 broadcastChat(game,message);
@@ -74,6 +74,7 @@ public class GameEndpoint {
 
     private void broadcastChat(Game game, Message message) {
         try {
+            System.out.println(message.toString());
             gameEndpoints.get(game.getWhiteUser_id()).session.getBasicRemote().sendObject(message);
             gameEndpoints.get(game.getBlackUser_id()).session.getBasicRemote().sendObject(message);
         } catch (IOException | EncodeException e) {

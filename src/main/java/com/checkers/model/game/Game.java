@@ -425,8 +425,10 @@ public class Game {
                                     for (Move m : moves) {
                                         int column = m.getDestination().getColumn() - 'A';
                                         int row = m.getDestination().getRow() - 1;
-                                        if (str[column][row].equals(""))
-                                            str[column][row] += "h";
+
+                                        if(str[column][row]!=null)
+                                            if (str[column][row].equals(""))
+                                                str[column][row] += "h";
                                     }
                                 }
                             }

@@ -86,7 +86,7 @@ public class Game {
         if (isSingleMovePossible(move, piece)) {
             makeSingleMove(move);
             setBoardState(makeString4BoardState());
-            if (move.isJump() && !canJump(board.getPlace(move.getDestination()).getPieceOccupying()))
+            if (!move.isJump() || !canJump(board.getPlace(move.getDestination()).getPieceOccupying()))
                 switchPlayer();
         } else throw new PlayerError("Unexpected move");
         return boardStateToSend(userId);
@@ -385,16 +385,11 @@ public class Game {
                                 moves = findListOfAvailableJumps(piece, place);
                                 for (Move m : moves) {
                                     str[m.getDestination().getRow() - 1][m.getDestination().getColumn() - 'A'] = "h";
-                                    System.out.println(str[m.getDestination().getRow() - 1][m.getDestination().getColumn() - 'A']+" str "+(m.getDestination().getRow() - 1)+(m.getDestination().getColumn() - 'A'));
-                                    System.out.println(m);
                                 }
                             } else if (canMove(piece)) {
                                 moves = findListOfAvailableMoves(piece);
                                 for (Move m : moves) {
                                     str[m.getDestination().getRow() - 1][m.getDestination().getColumn() - 'A'] = "h";
-                                    System.out.println(str[m.getDestination().getRow() - 1][m.getDestination().getColumn() - 'A']+" str "+(m.getDestination().getRow() - 1)+(m.getDestination().getColumn() - 'A'));
-
-                                    System.out.println(m);
                                 }
                             }
                         }
@@ -436,7 +431,7 @@ public class Game {
                                     for (Move m : jumps) {
                                         int column = m.getDestination().getColumn() - 'A';
                                         int row = m.getDestination().getRow() - 1;
-                                        str[column][row] = "h";
+                                        str[row][column] = "h";
                                     }
                                 }
                             } else {
@@ -446,7 +441,7 @@ public class Game {
                                     for (Move m : moves) {
                                         int column = m.getDestination().getColumn() - 'A';
                                         int row = m.getDestination().getRow() - 1;
-                                        str[column][row] = "h";
+                                        str[row][column]= "h";
                                     }
                                 }
                             }

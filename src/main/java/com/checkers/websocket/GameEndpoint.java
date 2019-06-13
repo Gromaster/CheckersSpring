@@ -37,7 +37,7 @@ public class GameEndpoint {
     public void onMessage(Session session, Message message, @PathParam("userId") Integer user_Id) {
         Game game = null;
         int gameId = message.getGameId();
-        int userId = message.getUserId();
+        int userId = user_Id;
 
         if ((game = readerDB.load(gameId)) == null) {
             game = new Game(gameId);
@@ -50,7 +50,7 @@ public class GameEndpoint {
         game.readBoardState();
 
         System.out.println("\n" + message.toString());
-        System.out.println("\n\n" + Arrays.deepToString(game.boardStateToSend(userId)) + "\n\n");
+
         if (message.getType() != null)
             switch (message.getType()) {
                 case "chat-message":

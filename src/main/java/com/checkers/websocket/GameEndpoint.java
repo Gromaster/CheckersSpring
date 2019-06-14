@@ -24,7 +24,7 @@ public class GameEndpoint {
     private SaverDB saverDB = new SaverDB();
     private Session session;
     private static HashMap<Integer, GameEndpoint> gameEndpoints = new HashMap<>();
-    private Timer timer=new Timer();
+    private Timer timer = new Timer();
 
     @OnOpen
     public synchronized void onOpen(Session session, @PathParam("userId") Integer userId) {
@@ -43,9 +43,9 @@ public class GameEndpoint {
             game = new Game(gameId);
         }
         if (message.getMyColor() != null) {
-            System.out.println("***********************\n"+message.getUserId()+"   "+message.getMyColor());
+            System.out.println("***********************\n" + message.getUserId() + "   " + message.getMyColor());
             game.setPlayerRole(message.getUserId(), message.getMyColor());
-            game.setTime(message.getTimeControl(),message.getTimeControlBonus());
+            game.setTime(message.getTimeControl(), message.getTimeControlBonus());
         }
         saverDB.save(game);
         game.readBoardState();
@@ -54,20 +54,24 @@ public class GameEndpoint {
 
         if (message.getType() != null)
             switch (message.getType()) {
-                case "chat-message":
+                case "message":
                     broadcastChat(game, message);
                     break;
                 case "piece-click":
-                    if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
-                        message.setBoard(game.executeClick(message.getMessage(), userId));
-                        send(user_Id, message);
+                    if (message.isStart()) {
+                        if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
+                            message.setBoard(game.executeClick(message.getMessage(), userId));
+                            send(user_Id, message);
+                        }
                     }
                     break;
                 case "move":
-                    if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
-                        message.setBoard(game.executeMove(message.getMessage(), userId));
-                        message.setCurrentPlayer(game.getCurrentPlayerId() == game.getWhiteUser_id() ? 0 : 1);
-                        broadcastMove(game, message);
+                    if (message.isStart()) {
+                        if (userId == game.getCurrentPlayerId() && game.getBlackUser_id() != 0 && game.getWhiteUser_id() != 0) {
+                            message.setBoard(game.executeMove(message.getMessage(), userId));
+                            message.setCurrentPlayer(game.getCurrentPlayerId() == game.getWhiteUser_id() ? 0 : 1);
+                            broadcastMove(game, message);
+                        }
                     }
                     break;
             }
@@ -79,7 +83,7 @@ public class GameEndpoint {
 
     private void broadcastChat(Game game, Message message) {
         try {
-            ChatMessage chatMessage=new ChatMessage(message);
+            ChatMessage chatMessage = new ChatMessage(message);
             System.out.println(chatMessage.toString());
             gameEndpoints.get(game.getWhiteUser_id()).session.getBasicRemote().sendObject(chatMessage);
             gameEndpoints.get(game.getBlackUser_id()).session.getBasicRemote().sendObject(chatMessage);

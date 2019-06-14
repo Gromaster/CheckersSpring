@@ -10,6 +10,7 @@ public class Message {
     private int timeControl;
     private int timeControlBonus;
     private int winnerId;
+    private boolean start;
     private String message;
     private String type;
     private String[][] board;
@@ -120,6 +121,14 @@ public class Message {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isStart() {
+        return start;
+    }
+
+    public void setStart(boolean start) {
+        this.start = start;
     }
 
     @Override

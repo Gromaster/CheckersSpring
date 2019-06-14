@@ -43,6 +43,7 @@ public class GameEndpoint {
             game = new Game(gameId);
         }
         if (message.getMyColor() != null) {
+            System.out.println("***********************\n"+message.getUserId()+"   "+message.getMyColor());
             game.setPlayerRole(message.getUserId(), message.getMyColor());
             game.setTime(message.getTimeControl(),message.getTimeControlBonus());
         }

@@ -75,6 +75,7 @@ public class GameEndpoint {
                     }
                     break;
             }
+
         if (game.checkIfEnd())
             message.winner(game.winner());
 
